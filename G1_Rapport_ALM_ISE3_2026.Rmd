@@ -1,0 +1,1240 @@
+---
+documentclass: article
+fontsize: 11pt
+geometry:
+  - paperwidth=210mm
+  - paperheight=297mm
+  - left=2.5cm
+  - right=2.5cm
+  - top=2.5cm
+  - bottom=2.5cm
+output:
+  pdf_document:
+    toc: no
+    fig_caption: yes
+    number_sections: no
+    keep_tex: no
+header-includes: |
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage[french]{babel}
+  \usepackage{textcomp}
+  % Police Arial (équivalent Helvetica sous pdflatex) pour tout le document
+  \usepackage[scaled=0.95]{helvet}
+  \renewcommand{\familydefault}{\sfdefault}
+  \usepackage[]{microtype}
+  \usepackage{anyfontsize}
+  \usepackage{amsmath,amssymb}
+  \usepackage{MnSymbol}
+  \usepackage{setspace}
+  \usepackage{fancyhdr}
+  \setlength{\headheight}{14.5pt}
+  \usepackage{titlesec}
+  \usepackage{enumitem}
+  \usepackage{float}
+  \usepackage{calc}
+  \usepackage{etoolbox}
+  \usepackage{pifont}
+  \usepackage{array}
+  \usepackage{multirow}
+  \usepackage{longtable}
+  \usepackage{booktabs}
+  \usepackage{tabularx}
+  \usepackage[dvipsnames, svgnames, x11names]{xcolor}
+  \definecolor{deepblue}{RGB}{10,60,90}
+  \definecolor{MidnightBlue}{RGB}{25,25,112}
+  \definecolor{RoyalBlue}{RGB}{65,105,225}
+  \definecolor{darkblue}{HTML}{1F3864}
+  \definecolor{steelblue}{RGB}{70,130,180}
+  \definecolor{darkred}{RGB}{139,0,0}
+  \definecolor{ForestGreen}{RGB}{34,139,34}
+  \definecolor{orange}{RGB}{255,165,0}
+  \definecolor{gold}{RGB}{255,215,0}
+  \definecolor{gray}{RGB}{128,128,128}
+  \definecolor{lightblue}{rgb}{0.68,0.85,0.90}
+  \definecolor{marron}{RGB}{121,68,25}
+  \definecolor{blancsale}{RGB}{245,240,228}
+  \pagecolor{blancsale}
+  \usepackage{tikz}
+  \usetikzlibrary{shapes.geometric, arrows, calc}
+  \usepackage[most, many]{tcolorbox}
+  \usepackage{graphicx}
+  \usepackage{pdfpages}
+  \usepackage{shorttoc}
+  \usepackage{hyperref}
+  \IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+  \usepackage[Conny]{fncychap}
+  \usepackage[pages=all]{background}
+  \setcounter{secnumdepth}{4}
+  \renewcommand\thesection{\arabic{section}}
+  \renewcommand{\refname}{\textcolor{RoyalBlue}{Références bibliographiques}}
+  \usepackage{iftex}
+  % --- Styles des titres : numéro de section dans un cartouche, filet orange ---
+  \titleformat{\section}
+    {\large\bfseries}
+    {\tikz[baseline=(secnum.base)]{\node[fill=MidnightBlue, text=white,
+        rounded corners=2pt, inner xsep=7pt, inner ysep=4pt,
+        font=\large\bfseries] (secnum) {Section~\thesection};}}
+    {0.8em}
+    {\color{MidnightBlue}}
+    [{\color{orange}\titlerule[1.4pt]}]
+  \titleformat{\subsection}
+    {\normalsize\bfseries\color{MidnightBlue}}
+    {\textcolor{orange!80!black}{\thesubsection}}{0.6em}{}
+  \titleformat{\subsubsection}
+    {\normalsize\bfseries\color{darkblue}}
+    {\textcolor{orange!80!black}{\thesubsubsection}}{0.6em}{}
+  % --- Légendes des tableaux et figures ---
+  \usepackage[font=small, labelfont={bf,color=MidnightBlue}, labelsep=period]{caption}
+  % --- Confort de lecture : espacement des paragraphes, veuves et orphelines ---
+  \setlength{\parskip}{4pt plus 1pt}
+  \widowpenalty=10000
+  \clubpenalty=10000
+  % --- Listes à puces : points et étoiles (au lieu des tirets de babel-french) ---
+  \setlist[itemize,1]{label=\textbullet}
+  \setlist[itemize,2]{label=$\star$}
+  \titlespacing*{\section}{0pt}{1.5ex plus .5ex}{1ex}
+  \titlespacing*{\subsection}{0pt}{1.2ex plus .3ex}{0.8ex}
+  \titlespacing*{\subsubsection}{0pt}{1ex plus .2ex}{0.5ex}
+---
+
+```{=tex}
+\setlength{\headheight}{18pt}
+\setlength{\headsep}{20pt}
+\setlength{\footskip}{25pt}
+
+\renewcommand{\headrulewidth}{1pt}
+\let\oldheadrule\headrule
+\renewcommand{\headrule}{\color{orange}\oldheadrule}
+\renewcommand{\footrulewidth}{1pt}
+\let\oldfootrule\footrule
+\renewcommand{\footrule}{\color{orange}\oldfootrule}
+
+\pagestyle{fancy}
+\lhead{\scriptsize\textcolor{marron}{Asset Liability Management}}
+\rhead{\scriptsize\textcolor{marron}{2025-2026}}
+\lfoot{\scriptsize\textcolor{marron}{Groupe 1 : Alagbé, Sarr, Bamogo, Traoré}}
+\cfoot{\textcolor{marron}{\thepage}}
+\rfoot{\scriptsize\textcolor{marron}{ISE3-ENSAE 2026}}
+
+\newgeometry{margin=0pt}
+\begin{tikzpicture}[remember picture, overlay]
+    % Fond en dégradé : léger bleu en tête fondu vers le blanc cassé beige du document
+    \shade[top color=deepblue!6, middle color=blancsale!70!white, bottom color=blancsale]
+        (current page.south west) rectangle (current page.north east);
+    \draw [deepblue, line width=2pt]
+        ([shift={(10pt,-10pt)}]current page.north west)
+        rectangle ([shift={(-10pt,10pt)}]current page.south east);
+    \draw [orange!60!black, line width=0.5pt]
+        ([shift={(12.5pt,-12.5pt)}]current page.north west)
+        rectangle ([shift={(-12.5pt,12.5pt)}]current page.south east);
+    \draw [deepblue!60, line width=0.8pt]
+        ([shift={(15pt,-15pt)}]current page.north west)
+        rectangle ([shift={(-15pt,15pt)}]current page.south east);
+    \node[opacity=0.05] at (current page.center)
+        {\includegraphics[width=0.6\paperwidth]{ressource/image/ENSAE-Dakar-logo.png}};
+    \foreach \anchor/\xshift/\yshift in
+        {north west/25pt/-25pt, north east/-25pt/-25pt,
+         south west/25pt/25pt, south east/-25pt/25pt} {
+        \draw[deepblue!40, fill=deepblue!10,
+              rotate around={45:([shift={(\xshift,\yshift)}]current page.\anchor)}]
+            ([shift={(\xshift,\yshift)}]current page.\anchor) rectangle ++(10pt,10pt);
+    }
+    \draw[deepblue!80, line width=1.5pt]
+        ([shift={(120pt,50pt)}]current page.south west)
+        -- ([shift={(-120pt,50pt)}]current page.south east);
+    \node[draw=deepblue, fill=white, star, star points=5, inner sep=2pt, line width=1pt]
+        at ([yshift=50pt]current page.south) {};
+\end{tikzpicture}
+
+\thispagestyle{empty}
+
+\begin{center}
+    \vspace*{0.8cm}
+    \textsc{\Large République du Sénégal}\\[0.15cm]
+    \small{Un Peuple - Un But - Une Foi}\\[0.4cm]
+    \includegraphics[width=90pt]{ressource/image/Republique du Senegal.png}\\[0.5cm]
+    \textbf{\large Agence Nationale de la Statistique et de la Démographie (ANSD)}\\[0.2cm]
+    \includegraphics[width=85pt]{ressource/image/ANSD.jpg}\\[0.3cm]
+    \textbf{\large École Nationale de la Statistique et de l'Analyse Économique Pierre Ndiaye (ENSAE)}\\[0.2cm]
+    \includegraphics[width=85pt]{ressource/image/ENSAE-Dakar-logo.png}\\[1cm]
+
+    \begin{tikzpicture}
+        \node[fill=MidnightBlue, text=white, inner sep=14pt, rounded corners=3pt,
+              align=center, font=\LARGE\bfseries] (titre) {
+            Projet Asset Liability Management
+        };
+        \draw[MidnightBlue, line width=2pt]
+            ([yshift=-5pt]titre.south west) -- ([yshift=-5pt]titre.south east);
+    \end{tikzpicture}
+
+    \vspace{0.6cm}
+    {\itshape\Large «\,Analyse ALM des états financiers de BOA Niger, exercice 2023\,»}\\[2cm]
+
+    \vspace{1cm}
+    \begin{minipage}{0.5\textwidth}
+        \begin{flushleft}\large
+            \textcolor{MidnightBlue}{\textit{Rédigé par le Groupe 1 :}}\\[0.2cm]
+            \textbf{Abdou Hamid Alagbé}\\
+            \textbf{Mame El Hadji Sarr}\\
+            \textbf{Rasmane Bamogo}\\
+            \textbf{Sié Rachid Traoré}\\[0.15cm]
+            \textsc{\small Élèves Ingénieurs Statisticiens Économistes\\Option Finance \& Actuariat}
+        \end{flushleft}
+    \end{minipage}
+    \begin{minipage}{0.42\textwidth}
+        \begin{flushright}\large
+            \textcolor{MidnightBlue}{\textit{Sous la supervision de :}}\\[0.2cm]
+            \textbf{M. Bassirou Goudiaby}\\
+            \textsc{\small Enseignant}
+        \end{flushright}
+    \end{minipage}
+    \vspace{3cm}
+
+    {\Large\textbf{Juillet 2026}}
+\end{center}
+
+\backgroundsetup{
+  scale=1, color=black, opacity=1, angle=0,
+  contents={%
+    \begin{tikzpicture}[remember picture, overlay]
+      \foreach \anchor/\rot in
+          {north west/0, north east/-90, south east/-180, south west/90} {
+        \begin{scope}[shift={([shift={(15pt,-15pt)}]current page.\anchor)}, rotate=\rot]
+          \draw[deepblue!60, line width=1.2pt] (0,-25pt) -- (0,0) -- (25pt,0);
+          \draw[orange!60!black, line width=0.4pt] (3pt,-22pt) -- (3pt,3pt) -- (22pt,3pt);
+        \end{scope}
+      }
+      \draw[deepblue!20, line width=0.5pt]
+          ([xshift=35pt, yshift=-60pt]current page.north west)
+          -- ([xshift=35pt, yshift=60pt]current page.south west);
+      \foreach \y in {0,20,...,600} {
+          \draw[deepblue!20]
+              ([xshift=35pt, yshift=-\y pt-100pt]current page.north west) -- ++(-3pt,0);
+      }
+      \draw[deepblue!80, line width=1.5pt]
+          ([xshift=-120pt, yshift=60pt]current page.south)
+          -- ([xshift=120pt, yshift=60pt]current page.south);
+      \node[draw=deepblue, fill=white, star, star points=5, inner sep=2pt, line width=1pt]
+          at ([yshift=60pt]current page.south) {};
+      \node[deepblue!15, rotate=90, anchor=south] at ([xshift=25pt]current page.west)
+          {\textsc{\small ENSAE Pierre Ndiaye --- Ingénieur Statisticien Économiste --- Promo 2026}};
+    \end{tikzpicture}%
+  }
+}
+
+\restoregeometry
+\newpage
+% --- Sommaire court (shorttoc) dans un encadré TikZ/tcolorbox ---
+\begin{tcolorbox}[enhanced, breakable,
+    colback=deepblue!2, colframe=MidnightBlue, boxrule=1pt, arc=2mm,
+    left=5mm, right=5mm, top=1mm, bottom=4mm,
+    drop fuzzy shadow=deepblue!40]
+\shorttoc{\textcolor{MidnightBlue}{Sommaire}}{1}
+\end{tcolorbox}
+\renewcommand{\listtablename}{\textcolor{MidnightBlue}{Liste des tableaux}}
+{\color{black}\listoftables}
+\onehalfspacing
+```
+
+```{r setup, include=FALSE, comment=""}
+knitr::opts_chunk$set(
+  echo    = FALSE,   # le code R n'apparaît pas dans le rapport, seuls les résultats
+  warning = FALSE,
+  message = FALSE,
+  comment = "",
+  cache   = FALSE,
+  fig.pos = "H",
+  dev     = "cairo_pdf",
+  dev.args = list(bg = "transparent"),
+  fig.align = "center",
+  size    = "footnotesize"  # options : tiny, scriptsize, footnotesize, small, normalsize
+)
+
+# Hook qui applique la taille LaTeX à chaque chunk
+knitr::knit_hooks$set(size = function(before, options, envir) {
+  if (before) paste0("\n\n\\", options$size, "\n\n") else "\n\n\\normalsize\n\n"
+})
+
+options(OutDec = ",", scipen = 999)
+```
+
+\newpage
+
+\begin{tcolorbox}[enhanced, colback=blancsale!60!white, colframe=MidnightBlue,
+    boxrule=1pt, arc=2mm, left=5mm, right=5mm, top=3mm, bottom=3mm,
+    title={\bfseries Résumé exécutif}, colbacktitle=MidnightBlue,
+    coltitle=white, fonttitle=\normalsize]
+\begin{itemize}[itemsep=2pt]
+  \item Rentabilité solide en 2023 malgré la crise : PNB de 27,0 milliards ($+9{,}6\,\%$),
+        résultat net de 10,1 milliards, ROE de 22,4\,\%, coefficient d'exploitation de 49,4\,\%.
+  \item Choc de liquidité absorbé mais marges de sécurité entamées : dépôts en repli de
+        16,5\,\%, refinancement BCEAO porté à 68 milliards (19\,\% du bilan), trésorerie libre
+        réduite et portefeuille de titres publics largement nanti.
+  \item Impasse de liquidité contractuelle à un an de $-127{,}7$ milliards, ramenée à
+        $-9{,}2$ milliards après conventions d'écoulement ; stress de 30 jours couvert
+        à environ 103\,\%.
+  \item Risque de taux modéré en marge ($+0{,}18$ milliard de MNI pour $+100$ pb) mais
+        significatif en valeur ($\Delta$EVE de $-6{,}3$ milliards, soit $-13{,}8\,\%$
+        des fonds propres).
+  \item Solvabilité confortable : ratio de 17,74\,\% pour un minimum de 11,5\,\%, levier de
+        7,67\,\%, fonds propres composés à 100\,\% de CET1 ; vigilance sur la concentration
+        des grands risques (2,99 fois le T1) et sur les créances en souffrance (10,3\,\%).
+  \item Priorités recommandées : reconstitution des dépôts et du coussin d'actifs liquides
+        non grevés, allongement du passif, formalisation des limites et du dispositif ALCO.
+\end{itemize}
+\end{tcolorbox}
+
+\section{\textcolor{MidnightBlue}{Objet, périmètre et données de l'étude}}
+
+\subsection{\textcolor{MidnightBlue}{Objet et périmètre}}
+
+Le présent rapport évalue le profil de risque structurel de bilan de BANK OF AFRICA - NIGER
+(BOA Niger) sur la base de ses états financiers certifiés au 31 décembre 2023 et de son
+reporting prudentiel. Il couvre les cinq volets suivants :
+
+\begin{enumerate}[label=(\roman*)]
+  \item l'analyse de la structure du bilan et de sa dynamique 2022--2023 ;
+  \item l'analyse de la profitabilité (soldes intermédiaires de gestion) et de la rentabilité ;
+  \item la mesure du risque de liquidité : profil d'échéances, impasses (\textit{liquidity gaps})
+        contractuelles et ajustées, transformation, scénario de stress ;
+  \item la mesure du risque de taux : impasses de taux, sensibilité de la marge nette d'intérêt
+        (MNI), duration et sensibilité de la valeur économique ; puis le risque de change ;
+  \item la solvabilité et la conformité au dispositif prudentiel de l'UMOA (Décision
+        n°013/24/06/2016/CM/UMOA), à partir du reporting prudentiel FODEP.
+\end{enumerate}
+
+\subsection{\textcolor{MidnightBlue}{Sources de données}}
+
+\begin{itemize}
+  \item États financiers publiés de BOA Niger au 31/12/2023 (bilan, hors-bilan, compte de
+        résultat et annexes 4.1 à 4.27), certifiés par les commissaires aux comptes (Mazars Niger
+        et Exco--FCA). L'annexe 4.15 (ventilation des emplois et ressources suivant la durée
+        résiduelle) constitue la matière première du profil d'échéances ALM ;
+  \item FODEP au 31/12/2022 (formulaire officiel de déclaration du dispositif prudentiel,
+        états EP01 à EP39) renseigné pour BOA Niger : fonds propres effectifs, actifs pondérés des
+        risques, ratios de solvabilité, ratio de levier, division des risques ;
+  \item Dispositif prudentiel applicable aux établissements de crédit de l'UMOA
+        (BCEAO, 2016) pour les normes de référence.
+\end{itemize}
+
+\subsection{\textcolor{MidnightBlue}{Faits marquants de l'exercice}}
+
+L'exercice 2023 a été marqué par les sanctions économiques et financières de la CEDEAO et de
+l'UEMOA consécutives au changement de régime du 26 juillet 2023 (suspension des transactions
+financières régionales et de l'accès de l'État du Niger au marché des titres publics), levées
+pour l'essentiel en février 2024. Ces événements se traduisent directement dans le bilan de
+BOA Niger : contraction des dépôts de la clientèle, tension sur la trésorerie, recours accru au
+refinancement de la BCEAO et hausse du coût du risque. Ils sont pris en compte dans la lecture
+de l'ensemble des indicateurs présentés ci-après.
+
+```{r packages}
+if (!require(knitr))      install.packages("knitr")
+if (!require(ggplot2))    install.packages("ggplot2")
+if (!require(kableExtra)) install.packages("kableExtra")
+library(knitr); library(ggplot2); library(kableExtra)
+
+# --- Habillage commun des tableaux : en-tête orange, lignes rayées de gris ---
+kable <- function(...) {
+  knitr::kable(...) |>
+    kableExtra::kable_styling(latex_options = c("striped", "HOLD_position"),
+                              stripe_color  = "gray!12", font_size = 9) |>
+    kableExtra::row_spec(0, background = "#ED7D31", color = "white", bold = TRUE)
+}
+
+# --- Fonctions utilitaires de mise en forme (montants en millions de F CFA) ---
+fmt  <- function(x, d = 1) formatC(x, format = "f", digits = d, big.mark = " ")
+pct  <- function(x, d = 1) paste0(formatC(x, format = "f", digits = d), " %")
+
+# --- Couleurs des graphiques : orange dominant + gris, couleurs unies (pas de dégradé) ---
+col_orange <- "#ED7D31"; col_gris <- "#7F7F7F"
+col_bleu   <- "#1F3864"; col_rouge <- "#8B0000"; col_vert <- "#228B22"
+
+# --- Thème graphique commun du rapport (sans grille de fond) ---
+theme_alm <- theme_minimal(base_size = 10) +
+  theme(panel.grid = element_blank(),
+        plot.background  = element_rect(fill = "transparent", colour = NA),
+        panel.background = element_rect(fill = "transparent", colour = NA),
+        legend.background = element_rect(fill = "transparent", colour = NA),
+        legend.key = element_rect(fill = "transparent", colour = NA),
+        axis.line  = element_line(colour = "gray45", linewidth = 0.35),
+        axis.ticks = element_line(colour = "gray45", linewidth = 0.3),
+        plot.subtitle = element_text(colour = "gray35", size = 8.5),
+        strip.text = element_text(face = "bold", colour = "#191970"),
+        axis.title = element_text(size = 9),
+        legend.position = "bottom")
+```
+
+\newpage
+
+\section{\textcolor{MidnightBlue}{Présentation de l'établissement et chiffres clés}}
+
+BANK OF AFRICA -- NIGER est une société anonyme de droit nigérien au capital de 13 milliards de
+F\,CFA, cotée à la BRVM, membre du groupe BOA (BMCE Group). Son actionnariat au 31/12/2023 est
+dominé par BOA WEST AFRICA (59,1\,\%), aux côtés de la BOAD (5,7\,\%), d'ATTICA (0,4\,\%)
+et d'un flottant de porteurs individuels de l'UEMOA (34,8\,\%). La banque emploie 312 agents
+(annexe 4.20) et exerce une activité de banque universelle : collecte de dépôts, crédits aux
+entreprises, aux particuliers et à l'État, et détention d'un portefeuille important de titres
+publics de l'UMOA.
+
+```{r chiffres-cles, results='asis'}
+# --- Chiffres clés (en millions de F CFA, sources : états financiers 2023, annexe 4.20) ---
+chiffres <- data.frame(
+  Indicateur = c("Total bilan", "Créances nettes sur la clientèle",
+                 "Dépôts de la clientèle", "Capitaux propres",
+                 "Produit net bancaire", "Résultat net", "Effectif (agents)"),
+  `2021` = c(NA, NA, NA, 41968.6, 24995.1, 9396.5, 285),
+  `2022` = c(357508.8, 192784.7, 245622.1, 44172.7, 24623.9, 10134.1, 290),
+  `2023` = c(349869.2, 183084.1, 205153.2, 45669.5, 26976.0, 10076.7, 312),
+  check.names = FALSE
+)
+kable(chiffres, booktabs = TRUE, digits = 1, format.args = list(big.mark = " "),
+      caption = "Chiffres clés de BOA Niger 2021--2023 (millions de F CFA)",
+      linesep = "")
+```
+
+Trois faits saillants ressortent d'emblée : (i) le repli du total bilan ($-2{,}1\,\%$) et
+surtout des dépôts clientèle ($-16{,}5\,\%$) en 2023, conséquence directe du contexte de
+crise ; (ii) la résilience du résultat (PNB en hausse de $+9{,}6\,\%$, résultat net
+quasi stable à 10,1 milliards) ; (iii) le renforcement continu des capitaux propres
+(45,7 milliards).
+
+\newpage
+
+\section{\textcolor{MidnightBlue}{Analyse de la structure du bilan}}
+
+\subsection{\textcolor{MidnightBlue}{Bilan synthétique 2022--2023}}
+
+```{r bilan-data}
+# ============================================================
+# BILAN (montants nets publiés, convertis en millions de F CFA)
+# Source : bilan destiné à la publication, BOA Niger, 31/12/2023
+# ============================================================
+actif <- data.frame(
+  Poste = c("Caisse, Banque Centrale, CCP", "Effets publics et valeurs assimilées",
+            "Créances bancaires et assimilées", "Créances sur la clientèle",
+            "Obligations et autres titres à revenu fixe",
+            "Actions et autres titres à revenu variable", "Autres actifs",
+            "Comptes de régularisation", "Participations et titres détenus à LT",
+            "Parts dans les entreprises liées", "Prêts subordonnés",
+            "Immobilisations incorporelles", "Immobilisations corporelles"),
+  a2022 = c(14718.4, 115496.3, 9729.0, 192784.7, 777.7, 1258.0, 2307.6,
+            3273.0, 213.1, 428.3, 852.4, 1018.1, 14652.3),
+  a2023 = c(5793.5, 121382.6, 13063.1, 183084.1, 3190.3, 1644.0, 2356.2,
+            1352.1, 217.6, 454.1, 889.6, 929.6, 15512.6)
+)
+
+passif <- data.frame(
+  Poste = c("Dettes interbancaires et assimilées", "Dettes à l'égard de la clientèle",
+            "Autres passifs", "Comptes de régularisation", "Provisions",
+            "Capitaux propres et ressources assimilées"),
+  a2022 = c(59178.6, 245622.1, 1254.7, 5248.5, 2032.3, 44172.7),
+  a2023 = c(90759.8, 205153.2, 1411.1, 3506.4, 3369.3, 45669.5)
+)
+
+tot_a22 <- sum(actif$a2022);  tot_a23 <- sum(actif$a2023)
+tot_p22 <- sum(passif$a2022); tot_p23 <- sum(passif$a2023)
+```
+
+```{r bilan-table, results='asis'}
+bilan_actif <- rbind(actif,
+                     data.frame(Poste = "TOTAL ACTIF", a2022 = tot_a22, a2023 = tot_a23))
+bilan_actif$var   <- 100 * (bilan_actif$a2023 / bilan_actif$a2022 - 1)
+bilan_actif$part  <- 100 * bilan_actif$a2023 / tot_a23
+
+kable(bilan_actif, booktabs = TRUE, digits = 1, format.args = list(big.mark = " "),
+      col.names = c("ACTIF (net)", "2022", "2023", "Var. (%)", "Part 2023 (%)"),
+      caption = "Actif du bilan de BOA Niger (millions de F CFA)", linesep = "")
+```
+
+```{r bilan-table-passif, results='asis'}
+bilan_passif <- rbind(passif,
+                      data.frame(Poste = "TOTAL PASSIF", a2022 = tot_p22, a2023 = tot_p23))
+bilan_passif$var  <- 100 * (bilan_passif$a2023 / bilan_passif$a2022 - 1)
+bilan_passif$part <- 100 * bilan_passif$a2023 / tot_p23
+
+kable(bilan_passif, booktabs = TRUE, digits = 1, format.args = list(big.mark = " "),
+      col.names = c("PASSIF", "2022", "2023", "Var. (%)", "Part 2023 (%)"),
+      caption = "Passif du bilan de BOA Niger (millions de F CFA)", linesep = "")
+```
+
+```{r bilan-graph, fig.height=4.4, fig.width=7.5, fig.cap="Structure simplifiée du bilan de BOA Niger au 31/12/2023 (grandes masses)"}
+# --- Grandes masses 2023 ---
+gm <- data.frame(
+  cote  = rep(c("Emplois", "Ressources"), each = 4),
+  poste = c("Trésorerie et interbancaire", "Portefeuille de titres",
+            "Crédits à la clientèle", "Immobilisations et divers",
+            "Refinancement interbancaire et BCEAO", "Dépôts de la clientèle",
+            "Autres passifs et provisions", "Capitaux propres"),
+  mnt   = c(5793.5 + 13063.1,
+            121382.6 + 3190.3 + 1644.0 + 217.6 + 454.1 + 889.6,
+            183084.1,
+            929.6 + 15512.6 + 2356.2 + 1352.1,
+            90759.8, 205153.2,
+            1411.1 + 3506.4 + 3369.3, 45669.5)
+)
+gm$part <- ave(gm$mnt, gm$cote, FUN = function(x) 100 * x / sum(x))
+gm$lab  <- paste0(fmt(gm$mnt / 1000), " Mds (", fmt(gm$part), " %)")
+
+ggplot(gm, aes(reorder(poste, mnt), mnt / 1000, fill = cote)) +
+  geom_col(width = 0.62, show.legend = FALSE) +
+  geom_text(aes(label = lab), hjust = -0.06, size = 3, colour = "gray20") +
+  coord_flip() +
+  facet_wrap(~cote, ncol = 1, scales = "free_y") +
+  scale_fill_manual(values = c(Emplois = col_orange, Ressources = col_gris)) +
+  scale_y_continuous(limits = c(0, 292), expand = expansion(mult = c(0, 0.02))) +
+  labs(x = NULL, y = "milliards de F CFA") +
+  theme_alm
+```
+
+\subsection{\textcolor{MidnightBlue}{Lecture ALM de la structure et de sa déformation en 2023}}
+
+Le bilan de BOA Niger présente la physionomie classique d'une banque commerciale de l'UMOA :
+
+\begin{itemize}
+  \item à l'actif, les crédits à la clientèle dominent (52,3\,\% du total) devant un
+        portefeuille de titres, essentiellement des effets publics de l'UMOA
+        (121,4 milliards, 34,7\,\% du bilan) logés en titres d'investissement (113,9 milliards)
+        et de placement (7,5 milliards) ;
+  \item au passif, les dépôts de la clientèle restent la première ressource (58,6\,\%),
+        complétés par le refinancement interbancaire et surtout BCEAO et par des capitaux
+        propres représentant 13,1\,\% du bilan.
+\end{itemize}
+
+La déformation du bilan en 2023 est la signature comptable de la crise : les dépôts clientèle
+chutent de 40,5 milliards ($-16{,}5\,\%$), dont $-19{,}0$ milliards sur les comptes à
+vue, $-7{,}9$ milliards sur l'épargne et $-11{,}8$ milliards sur les autres dépôts (annexe 4.10),
+tandis que les emprunts au guichet BCEAO passent de 35,0 à 68,0 milliards
+(annexe 4.9). La banque a donc substitué du refinancement banque centrale, gagé sur son
+portefeuille de titres publics, à une ressource clientèle en retrait. Simultanément, la trésorerie en caisse et à
+la banque centrale a été consommée (de 14,7 à 5,8 milliards) et l'encours net de crédits s'est
+contracté de 9,7 milliards, contribuant au dégonflement du bilan.
+
+```{r ratios-structure, results='asis'}
+# --- Ratios de structure (en %) ---
+dep22 <- 245622.1; dep23 <- 205153.2
+cred22 <- 192784.7; cred23 <- 183084.1
+rs <- data.frame(
+  Ratio = c("Crédits nets / Total actif", "Titres / Total actif",
+            "Dépôts clientèle / Total passif", "Crédits nets / Dépôts clientèle",
+            "Refinancement (interbancaire + BCEAO) / Total passif",
+            "Capitaux propres / Total actif"),
+  `2022` = c(100*cred22/tot_a22, 100*(115496.3+777.7+1258.0)/tot_a22,
+             100*dep22/tot_p22, 100*cred22/dep22, 100*59178.6/tot_p22,
+             100*44172.7/tot_a22),
+  `2023` = c(100*cred23/tot_a23, 100*(121382.6+3190.3+1644.0)/tot_a23,
+             100*dep23/tot_p23, 100*cred23/dep23, 100*90759.8/tot_p23,
+             100*45669.5/tot_a23),
+  check.names = FALSE
+)
+kable(rs, booktabs = TRUE, digits = 1,
+      caption = "Ratios de structure du bilan (en \\%)", linesep = "")
+```
+
+Le ratio crédits/dépôts se dégrade de 78,5\,\% à 89,2\,\% : l'excédent structurel
+de ressources clientèle qui caractérisait la banque en 2022 s'est fortement résorbé, ce qui accroît
+mécaniquement la dépendance au refinancement de marché et de banque centrale (25,9\,\% du passif
+en 2023 contre 16,6\,\% en 2022).
+
+\newpage
+
+\section{\textcolor{MidnightBlue}{Profitabilité et rentabilité}}
+
+\subsection{\textcolor{MidnightBlue}{Les soldes intermédiaires de gestion bancaires}}
+
+```{r sig-data, results='asis'}
+# ============================================================
+# COMPTE DE RÉSULTAT (millions de F CFA)
+# Source : compte de résultat publié 2023 (comparatif 2022)
+# ============================================================
+sig <- data.frame(
+  Poste = c("Intérêts et produits assimilés", "Intérêts et charges assimilées",
+            "Marge nette d'intérêt", "Commissions nettes",
+            "Résultat des portefeuilles (négociation + placement)",
+            "Autres produits (dividendes, exploitation bancaire, nets)",
+            "PRODUIT NET BANCAIRE", "Charges générales d'exploitation",
+            "Dotations aux amortissements", "RÉSULTAT BRUT D'EXPLOITATION",
+            "Coût du risque", "RÉSULTAT D'EXPLOITATION",
+            "Résultat sur actifs immobilisés", "Impôts sur les bénéfices",
+            "RÉSULTAT NET"),
+  a2022 = c(22470.9, -5289.2, 17181.6, 4882.4, 1146.9, 1412.9, 24623.9,
+            -11034.7, -966.4, 12622.8, -779.5, 11843.3, 49.1, -1758.3, 10134.1),
+  a2023 = c(23152.7, -6026.3, 17126.4, 6396.4, 2126.9, 1326.3, 26976.0,
+            -11826.3, -1492.1, 13657.6, -2135.0, 11522.5, 53.3, -1499.1, 10076.7)
+)
+sig$var <- 100 * (sig$a2023 / sig$a2022 - 1)
+
+kable(sig, booktabs = TRUE, digits = 1, format.args = list(big.mark = " "),
+      col.names = c("Soldes intermédiaires de gestion", "2022", "2023", "Var. (%)"),
+      caption = "Formation du résultat de BOA Niger (millions de F CFA)", linesep = "")
+```
+
+```{r sig-graph-pnb, fig.height=2.6, fig.width=7, fig.cap="Composition du produit net bancaire 2023"}
+pnb_comp <- data.frame(
+  comp = c("Marge nette d'intérêt", "Commissions nettes",
+           "Résultat des portefeuilles", "Autres produits nets"),
+  mnt  = c(17126.4, 6396.4, 2126.9, 1326.3)
+)
+pnb_comp$part <- 100 * pnb_comp$mnt / sum(pnb_comp$mnt)
+
+ggplot(pnb_comp, aes(reorder(comp, mnt), mnt / 1000)) +
+  geom_col(fill = col_orange, width = 0.58) +
+  geom_text(aes(label = paste0(fmt(mnt / 1000), " Mds (", fmt(part), " %)")),
+            hjust = -0.06, size = 3.1, colour = "gray20") +
+  coord_flip() +
+  scale_y_continuous(limits = c(0, 23), expand = expansion(mult = c(0, 0.02))) +
+  labs(x = NULL, y = "milliards de F CFA") +
+  theme_alm
+```
+
+```{r sig-graph-cascade, fig.height=3.1, fig.width=7, fig.cap="Cascade de formation du résultat 2023 : du PNB au résultat net"}
+flux <- c(26976.0, -13318.4, -2135.0, -1445.8)
+cumu <- cumsum(flux)
+wf <- data.frame(
+  x     = 1:5,
+  etape = c("PNB", "Frais généraux\net dotations", "Coût du\nrisque",
+            "Divers et\nimpôts", "Résultat\nnet"),
+  ymin  = c(0, cumu[2], cumu[3], cumu[4], 0) / 1000,
+  ymax  = c(cumu[1], cumu[1], cumu[2], cumu[3], cumu[4]) / 1000,
+  type  = c("depart", "baisse", "baisse", "baisse", "arrivee"),
+  val   = c(flux, cumu[4]) / 1000
+)
+
+ggplot(wf) +
+  geom_rect(aes(xmin = x - 0.34, xmax = x + 0.34,
+                ymin = ymin, ymax = ymax, fill = type)) +
+  geom_segment(data = wf[1:4, ],
+               aes(x = x + 0.34, xend = x + 1 - 0.34, y = ymax, yend = ymax),
+               linetype = "dotted", colour = "gray45") +
+  geom_text(aes(x = x, y = pmax(ymin, ymax) + 1.3, label = fmt(val)),
+            size = 3.1, colour = "gray20") +
+  scale_x_continuous(breaks = wf$x, labels = wf$etape) +
+  scale_fill_manual(values = c(depart = col_orange, baisse = col_gris,
+                               arrivee = col_vert), guide = "none") +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.08))) +
+  labs(x = NULL, y = "milliards de F CFA") +
+  theme_alm
+```
+
+\subsection{\textcolor{MidnightBlue}{Ratios de profitabilité et de rentabilité}}
+
+```{r ratios-renta, results='asis'}
+actif_moy   <- (tot_a22 + tot_a23) / 2
+fp_moy      <- (44172.7 + 45669.5) / 2
+pnb23 <- 26976.0; pnb22 <- 24623.9
+
+renta <- data.frame(
+  Ratio = c("Marge nette d'intérêt / total actif moyen (NIM)",
+            "Coefficient net d'exploitation (frais généraux + dotations) / PNB",
+            "Coût du risque / encours brut clientèle",
+            "Rentabilité des actifs (ROA = RN / actif moyen)",
+            "Rentabilité des fonds propres (ROE = RN / FP moyens)"),
+  `2022` = c(100*17181.6/tot_a22, 100*12001.1/pnb22, 100*779.5/202455.4,
+             100*10134.1/tot_a22, 100*10134.1/43070.6),
+  `2023` = c(100*17126.4/actif_moy, 100*13318.4/pnb23, 100*2135.0/192457.9,
+             100*10076.7/actif_moy, 100*10076.7/fp_moy),
+  check.names = FALSE
+)
+kable(renta, booktabs = TRUE, digits = 2,
+      caption = "Ratios de profitabilité et de rentabilité (en \\%)", linesep = "")
+```
+
+La structure de performance est solide : un PNB en croissance de $+9{,}6\,\%$, tiré par les
+commissions ($+29{,}2\,\%$) et les résultats de portefeuille, compense la
+stagnation de la marge d'intérêt (le renchérissement du refinancement BCEAO, avec des charges
+d'intérêts en hausse de $13{,}9\,\%$, absorbe la hausse des produits). Le coefficient d'exploitation reste
+maîtrisé autour de 49\,\%, très en deçà des standards de la zone. Le point de vigilance est le
+coût du risque, multiplié par 2,7 (de 0,4\,\% à 1,1\,\% de l'encours brut), reflet de la
+dégradation de l'environnement : les créances en souffrance brutes atteignent
+19,9 milliards, soit 10,3\,\% de l'encours brut, provisionnées à hauteur de 47,2\,\%
+(annexes 4.5 et 4.12). La rentabilité demeure néanmoins remarquable : ROE de 22,4\,\% et
+ROA de 2,85\,\%, la banque ayant en outre distribué 8,58 milliards de dividendes en 2023
+(annexe 4.13).
+
+\newpage
+
+\section{\textcolor{MidnightBlue}{Gestion du risque de liquidité}}
+
+\subsection{\textcolor{MidnightBlue}{Le profil d'échéances contractuel}}
+
+L'annexe 4.15 des états financiers ventile les emplois et ressources selon la durée
+résiduelle contractuelle au 31/12/2023. Elle couvre les actifs et passifs financiers porteurs
+d'échéances (336,0 milliards d'emplois et 295,9 milliards de ressources) ; les capitaux propres,
+immobilisations et comptes divers ne sont pas ventilés.
+
+```{r echeancier-data, results='asis'}
+# ============================================================
+# PROFIL D'ÉCHÉANCES (annexe 4.15, millions de F CFA, 31/12/2023)
+# ============================================================
+bandes  <- c("< 1 mois", "1-3 mois", "3-12 mois", "1-5 ans", "> 5 ans")
+
+# Emplois
+a_interb <- c(14738.1,     0.0,     0.0,      0.0,  2579.8)  # créances sur EC
+a_client <- c(37035.0, 15458.3, 55201.8,  72369.7, 12393.1)  # créances clientèle
+a_oblig  <- c(    0.0,     0.0,    37.0,   2646.7,   506.7)  # obligations et TRF
+a_trv    <- c(    0.0,     0.0,     0.0,      0.0,  1644.0)  # titres à revenu variable
+a_plact  <- c( 2023.0,     0.0,     0.0,   4661.4,   819.3)  # titres de placement
+a_inv    <- c(22412.7,     0.0, 10047.9,  63259.5, 18158.7)  # titres d'investissement
+actifs_b <- a_interb + a_client + a_oblig + a_trv + a_plact + a_inv
+
+# Ressources
+p_interb <- c( 81555.2, 1034.0, 5702.5, 2468.1,    0.0)      # dettes envers EC (dont BCEAO)
+p_client <- c(181509.5, 7745.3, 7144.0, 6883.1, 1871.2)      # dettes envers la clientèle
+passifs_b <- p_interb + p_client
+
+echeancier <- data.frame(Bande = bandes, Emplois = actifs_b, Ressources = passifs_b)
+echeancier <- rbind(echeancier,
+                    data.frame(Bande = "TOTAL", Emplois = sum(actifs_b),
+                               Ressources = sum(passifs_b)))
+kable(echeancier, booktabs = TRUE, digits = 1, format.args = list(big.mark = " "),
+      caption = "Profil d'échéances contractuel au 31/12/2023 (millions de F CFA, annexe 4.15)",
+      linesep = "")
+```
+
+\subsection{\textcolor{MidnightBlue}{Les impasses de liquidité (\textit{liquidity gaps})}}
+
+L'impasse de liquidité par bande est définie comme la différence entre les emplois et les
+ressources tombant dans la bande d'échéance $t$ :
+$$\text{GAP}_t = \text{Actifs}_t - \text{Passifs}_t
+\qquad\text{et}\qquad
+\text{GAP}^{cum}_t = \sum_{s \le t} \text{GAP}_s$$
+Une impasse cumulée négative à court terme signifie que les ressources exigibles excèdent
+les actifs récupérables sur l'horizon : c'est un besoin potentiel de refinancement, la
+mesure du risque de transformation porté par la banque.
+
+```{r gaps-liquidite, results='asis'}
+gap      <- actifs_b - passifs_b
+gap_cum  <- cumsum(gap)
+
+tab_gap <- data.frame(Bande = bandes, Emplois = actifs_b, Ressources = passifs_b,
+                      Impasse = gap, `Impasse cumulée` = gap_cum, check.names = FALSE)
+kable(tab_gap, booktabs = TRUE, digits = 1, format.args = list(big.mark = " "),
+      caption = "Impasses de liquidité contractuelles au 31/12/2023 (millions de F CFA)",
+      linesep = "")
+```
+
+```{r gaps-graph, fig.height=3.5, fig.width=7, fig.cap="Impasses de liquidité contractuelles simples et cumulées (milliards de F CFA)"}
+dg <- data.frame(bande = factor(bandes, levels = bandes),
+                 gap = gap / 1000, cum = gap_cum / 1000)
+
+ggplot(dg, aes(bande, gap)) +
+  geom_col(aes(fill = gap >= 0), width = 0.58) +
+  geom_hline(yintercept = 0, colour = "gray40") +
+  geom_line(aes(y = cum, group = 1), colour = col_bleu, linewidth = 1.1) +
+  geom_point(aes(y = cum), colour = col_bleu, size = 2.4) +
+  geom_text(aes(y = cum, label = fmt(cum)), vjust = -1.1, size = 3,
+            colour = col_bleu) +
+  scale_fill_manual(values = c(`TRUE` = col_orange, `FALSE` = col_gris),
+                    guide = "none") +
+  scale_y_continuous(expand = expansion(mult = 0.14)) +
+  labs(x = NULL, y = "milliards de F CFA",
+       subtitle = "Barres : impasse de la bande (orange : excédent, gris : besoin) ; courbe bleue : impasse cumulée") +
+  theme_alm
+```
+
+En lecture purement contractuelle, le profil est celui d'une banque de transformation
+classique poussé à l'extrême par la crise : l'impasse à moins d'un mois ressort à
+$-186{,}9$ milliards de F CFA (les dépôts à vue étant juridiquement exigibles
+immédiatement), et l'impasse cumulée ne redevient positive qu'au-delà d'un an. Rapportée au total
+des ressources ventilées, l'impasse cumulée à 1 an ($-127{,}7$ milliards) représente 43\,\% des
+ressources : la banque \og emprunte court et prête long \fg.
+
+\subsection{\textcolor{MidnightBlue}{Impasses ajustées des comportements de la clientèle}}
+
+La lecture contractuelle surestime le risque : en pratique, les dépôts à vue et l'épargne
+constituent une ressource comportementalement stable (notion de \og noyau stable \fg{}
+ou \textit{core deposits}). Conformément aux conventions d'écoulement usuelles en ALM, nous
+retenons les hypothèses prudentes suivantes, appliquées aux comptes à vue de la clientèle
+(125,1 milliards) et aux comptes d'épargne à régime spécial (44,3 milliards, annexe 4.10) :
+
+\begin{itemize}
+  \item une fraction volatile de 15\,\% conservée en bande \og $<$ 1 mois \fg{} ;
+  \item un noyau stable de 85\,\% écoulé linéairement : 5\,\% en 1--3 mois, 10\,\% en 3--12 mois,
+        45\,\% en 1--5 ans et 25\,\% au-delà de 5 ans.
+\end{itemize}
+
+```{r gaps-ajustes, results='asis'}
+# --- Dépôts à vue + épargne (annexe 4.10), traités par convention d'écoulement ---
+dav      <- 125105.7 + 44271.2          # comptes ordinaires créditeurs + épargne
+conv     <- c(0.15, 0.05, 0.10, 0.45, 0.25)   # convention d'écoulement
+stopifnot(abs(sum(conv) - 1) < 1e-9)
+
+# Les DAV/épargne sont contractuellement logés en < 1 mois : on les re-ventile
+p_client_adj <- p_client
+p_client_adj[1] <- p_client_adj[1] - dav      # retrait de la bande < 1 mois
+p_client_adj <- p_client_adj + dav * conv     # ré-écoulement conventionnel
+
+passifs_adj <- p_interb + p_client_adj
+gap_adj     <- actifs_b - passifs_adj
+gap_adj_cum <- cumsum(gap_adj)
+
+tab_adj <- data.frame(Bande = bandes, `Ressources ajustées` = passifs_adj,
+                      Impasse = gap_adj, `Impasse cumulée` = gap_adj_cum,
+                      check.names = FALSE)
+kable(tab_adj, booktabs = TRUE, digits = 1, format.args = list(big.mark = " "),
+      caption = "Impasses de liquidité ajustées des conventions d'écoulement (millions de F CFA)",
+      linesep = "")
+```
+
+```{r gaps-adj-graph, fig.height=3.2, fig.width=7, fig.cap="Impasses de liquidité cumulées : vision contractuelle contre vision ajustée (milliards de F CFA)"}
+dc <- rbind(
+  data.frame(bande = factor(bandes, levels = bandes),
+             cum = gap_cum / 1000,     vision = "Contractuelle"),
+  data.frame(bande = factor(bandes, levels = bandes),
+             cum = gap_adj_cum / 1000, vision = "Ajustée (noyau stable des dépôts)")
+)
+
+ggplot(dc, aes(bande, cum, colour = vision, group = vision)) +
+  geom_hline(yintercept = 0, colour = "gray40") +
+  geom_line(linewidth = 1.1) +
+  geom_point(size = 2.3) +
+  geom_text(aes(label = fmt(cum)), vjust = -1, size = 2.9, show.legend = FALSE) +
+  scale_colour_manual(values = c("Contractuelle" = col_gris,
+                                 "Ajustée (noyau stable des dépôts)" = col_orange)) +
+  scale_y_continuous(expand = expansion(mult = 0.16)) +
+  labs(x = NULL, y = "milliards de F CFA", colour = NULL) +
+  theme_alm
+```
+
+Après ajustement comportemental, l'impasse cumulée à un mois se réduit de $-186{,}9$ à
+$-42{,}9$ milliards ; le besoin de refinancement culmine vers $-44{,}7$ milliards à
+trois mois puis se résorbe presque entièrement à un an ($-9{,}2$ milliards), montants
+à rapprocher du gisement d'actifs mobilisables : 121,4 milliards d'effets publics
+admissibles au refinancement BCEAO. Le risque de liquidité est donc gérable, mais au prix d'une
+forte dépendance au collatéral souverain et au guichet BCEAO, dépendance précisément
+révélée en 2023 (encours de refinancement de 68,0 milliards au 31/12/2023, annexe 4.9).
+
+\subsection{\textcolor{MidnightBlue}{Transformation et couverture des emplois longs}}
+
+```{r transformation}
+# --- Couverture des emplois à moyen-long terme par des ressources stables ---
+emplois_mlt    <- sum(actifs_b[4:5]) + 15512.6 + 929.6   # actifs > 1 an + immobilisations
+res_stables_c  <- 45669.5 + sum(passifs_b[4:5])          # FP + ressources contractuelles > 1 an
+res_stables_a  <- 45669.5 + sum(passifs_adj[4:5])        # idem, vision ajustée
+
+cat("Emplois à plus d'un an (yc immobilisations)   :", fmt(emplois_mlt), "M FCFA\n")
+cat("Couverture contractuelle par ressources stables:",
+    pct(100 * res_stables_c / emplois_mlt), "\n")
+cat("Couverture ajustée (noyau stable des dépôts)  :",
+    pct(100 * res_stables_a / emplois_mlt), "\n")
+```
+
+En vision contractuelle, les ressources stables (capitaux propres + ressources à plus d'un an) ne
+couvrent que $\approx 29\,\%$ des emplois longs ; en réintégrant le noyau stable des dépôts, la
+couverture remonte à $\approx 90\,\%$. Cet écart montre que la
+modélisation des dépôts sans échéance conditionne entièrement le diagnostic de
+transformation. Une couverture ajustée légèrement inférieure à 100\,\% suggère malgré tout un
+financement d'une partie des emplois longs par des ressources courtes, à corriger par de la
+ressource longue (lignes IFI, emprunts obligataires, dépôts à terme longs).
+
+\subsection{\textcolor{MidnightBlue}{Scénario de stress de liquidité à 1 mois}}
+
+Nous simulons un scénario de crise sévère à 30 jours, calibré \og à dire d'expert \fg{} sur
+l'épisode 2023 : retrait de 25\,\% des dépôts à vue, de 10\,\% de l'épargne et de 30\,\% des
+dépôts à terme et autres ; non-renouvellement de 50\,\% des dépôts interbancaires à vue ; tirage
+de 50\,\% des engagements de financement donnés. En face, la banque mobilise sa trésorerie, ses
+créances interbancaires à vue et son portefeuille d'effets publics avec une décote de 10\,\%
+(après déduction du collatéral déjà mobilisé au refinancement BCEAO, estimé à
+$68{,}0/0{,}9 = 75{,}6$ milliards).
+
+```{r stress-liquidite, results='asis'}
+# --- Sorties de trésorerie stressées (30 jours) ---
+sorties <- c(
+  "Retrait de 25 % des dépôts à vue"            = 0.25 * 125105.7,
+  "Retrait de 10 % de l'épargne"                = 0.10 * 44271.2,
+  "Retrait de 30 % des DAT et autres dépôts"    = 0.30 * (26216.3 + 9560.0),
+  "Fuite de 50 % des dépôts interbancaires"     = 0.50 * 12389.2,
+  "Tirage de 50 % des engagements de financement" = 0.50 * 14853.7
+)
+
+# --- Contreparties mobilisables ---
+collat_deja_mobilise <- 68000 / 0.90     # collatéral estimé derrière le refi BCEAO
+titres_libres <- max(121382.6 - collat_deja_mobilise, 0)
+entrees <- c(
+  "Caisse et Banque Centrale"                   = 5793.5,
+  "Créances interbancaires à vue"               = 14738.1,
+  "Effets publics libres (décote de 10 %)"      = 0.90 * titres_libres
+)
+
+tab_stress <- data.frame(
+  Élément = c(names(sorties), "TOTAL DES SORTIES", names(entrees),
+              "TOTAL MOBILISABLE", "EXCÉDENT (+) / IMPASSE (-) DE STRESS"),
+  Montant = c(sorties, sum(sorties), entrees, sum(entrees),
+              sum(entrees) - sum(sorties))
+)
+kable(tab_stress, booktabs = TRUE, digits = 1, format.args = list(big.mark = " "),
+      row.names = FALSE,
+      caption = "Stress test de liquidité à 30 jours (millions de F CFA)", linesep = "")
+```
+
+```{r stress-ratio}
+cat("Taux de couverture des sorties stressées :",
+    pct(100 * sum(entrees) / sum(sorties)), "\n")
+```
+
+Le coussin mobilisable couvre tout juste les sorties simulées (environ 103\,\%) : la
+banque résisterait à un choc d'ampleur comparable à 2023, mais sans marge de sécurité
+confortable, et en
+supposant le guichet BCEAO pleinement disponible. Ce résultat est cohérent avec l'esprit du
+ratio de liquidité à court terme (RLCT $\geq 100\,\%$) institué par le Titre XIII du
+dispositif prudentiel de l'UMOA, dont le respect exige de maintenir un encours suffisant d'actifs
+liquides de haute qualité non grevés : or l'essentiel du portefeuille de titres publics
+de BOA Niger est déjà nanti auprès de la BCEAO. La reconstitution d'actifs liquides libres est
+donc la priorité ALM n°1 à la sortie de crise.
+
+\newpage
+
+\section{\textcolor{MidnightBlue}{Gestion du risque de taux d'intérêt et de change}}
+
+\subsection{\textcolor{MidnightBlue}{L'impasse de taux (\textit{interest rate gap})}}
+
+Dans l'univers UMOA, les crédits et les titres sont très majoritairement à taux fixe : un
+actif ne se \og reprice \fg{} donc qu'à son échéance (ou à son renouvellement). Par symétrie, les
+passifs de marché (refinancement BCEAO et interbancaire, DAT) se repricent à leur échéance, tandis
+que les dépôts à vue non rémunérés et l'épargne réglementée (taux administré de 3,5\,\%)
+sont réputés non sensibles aux taux de marché. L'impasse de taux par bande s'écrit :
+$$\text{GAP}^{taux}_t = \text{Actifs sensibles}_t - \text{Passifs sensibles}_t$$
+
+```{r gap-taux, results='asis'}
+# --- Passifs sensibles : dettes EC (toutes bandes) + dépôts à terme ---
+# Les dettes clientèle des bandes > 1 mois sont essentiellement des DAT (annexe 4.15) ;
+# la part < 1 mois des DAT est obtenue par solde avec l'encours total de DAT (annexe 4.10).
+dat_total   <- 26216.3
+dat_1m      <- max(dat_total - sum(p_client[2:5]), 0)   # DAT logés en < 1 mois
+p_sens      <- p_interb + c(dat_1m, p_client[2:5])
+
+# --- Actifs sensibles : tous les actifs porteurs ventilés (taux fixe -> repricing à échéance)
+a_sens      <- actifs_b - a_trv          # les titres à revenu variable ne portent pas de taux
+
+gap_tx      <- a_sens - p_sens
+gap_tx_cum  <- cumsum(gap_tx)
+
+tab_tx <- data.frame(Bande = bandes, `Actifs sensibles` = a_sens,
+                     `Passifs sensibles` = p_sens, Impasse = gap_tx,
+                     `Impasse cumulée` = gap_tx_cum, check.names = FALSE)
+kable(tab_tx, booktabs = TRUE, digits = 1, format.args = list(big.mark = " "),
+      caption = "Impasses de taux d'intérêt par bande de repricing (millions de F CFA)",
+      linesep = "")
+```
+
+\subsection{\textcolor{MidnightBlue}{Sensibilité de la marge nette d'intérêt (MNI)}}
+
+L'impact d'un choc de taux $\Delta i$ sur la MNI des douze prochains mois s'obtient en pondérant
+l'impasse de chaque bande par la fraction d'année restant à courir après le repricing :
+$$\Delta \text{MNI} = \sum_{t \,\le\, 1\,an} \text{GAP}^{taux}_t \times \Delta i \times w_t$$
+
+```{r sensibilite-mni, results='asis'}
+# Poids temporels : repricing supposé au milieu de bande
+w <- c(11.5/12, 10/12, 4.5/12)          # bandes < 1 m, 1-3 m, 3-12 m
+chocs <- c(-2, -1, 1, 2) / 100          # -200, -100, +100, +200 pb
+
+dmni <- sapply(chocs, function(di) sum(gap_tx[1:3] * w * di))
+tab_mni <- data.frame(
+  `Choc de taux` = c("-200 pb", "-100 pb", "+100 pb", "+200 pb"),
+  `Impact sur la MNI (M FCFA)` = dmni,
+  `En % de la MNI 2023`        = 100 * dmni / 17126.4,
+  `En % du PNB 2023`           = 100 * dmni / 26976.0,
+  check.names = FALSE
+)
+kable(tab_mni, booktabs = TRUE, digits = 2, format.args = list(big.mark = " "),
+      caption = "Sensibilité de la marge nette d'intérêt à un choc de taux parallèle",
+      linesep = "")
+```
+
+```{r mni-graph, fig.height=2.6, fig.width=6, fig.cap="Impact d'un choc de taux parallèle sur la MNI à horizon un an (millions de F CFA)"}
+dm <- data.frame(choc = factor(c("-200 pb", "-100 pb", "+100 pb", "+200 pb"),
+                               levels = c("-200 pb", "-100 pb", "+100 pb", "+200 pb")),
+                 d = dmni)
+
+ggplot(dm, aes(choc, d)) +
+  geom_col(aes(fill = d >= 0), width = 0.5) +
+  geom_hline(yintercept = 0, colour = "gray40") +
+  geom_text(aes(label = fmt(d, 0), vjust = ifelse(d >= 0, -0.5, 1.4)),
+            size = 3.1, colour = "gray20") +
+  scale_fill_manual(values = c(`TRUE` = col_orange, `FALSE` = col_gris),
+                    guide = "none") +
+  scale_y_continuous(expand = expansion(mult = 0.18)) +
+  labs(x = NULL, y = "millions de F CFA") +
+  theme_alm
+```
+
+L'impasse cumulée à un an est positive ($\approx +51$ milliards) : la banque est
+\textit{asset sensitive}. Une hausse des taux de 100 pb accroîtrait la MNI d'environ
++0,18 milliard (+1,0\,\% de la MNI), une baisse la réduirait symétriquement.
+L'exposition, inférieure à 1\,\% du PNB pour 100 pb, est modérée. Elle reflète toutefois une
+hypothèse forte :
+la non-sensibilité des dépôts à vue. Une rémunération contrainte de la ressource en période de
+tension (course aux dépôts) dégraderait ce profil.
+
+\subsection{\textcolor{MidnightBlue}{Duration, sensibilité et valeur économique des fonds propres}}
+
+L'approche en valeur (économique) complète l'approche en marge. La duration de Macaulay d'un
+portefeuille est approchée par la durée résiduelle moyenne pondérée par les encours (flux
+concentrés au milieu de chaque bande), et la sensibilité s'en déduit :
+$S = -\dfrac{D}{1+i}$, avec un taux de rendement moyen $i = 6\,\%$.
+
+```{r duration, results='asis'}
+mid <- c(0.04, 0.17, 0.625, 3, 7)       # points médians des bandes (années)
+i0  <- 0.06
+
+# --- Duration du portefeuille d'effets publics (placement + investissement) ---
+ptf_titres <- a_plact + a_inv
+D_titres   <- sum(ptf_titres * mid) / sum(ptf_titres)
+S_titres   <- -D_titres / (1 + i0)
+dV_titres  <- S_titres * 0.01 * sum(ptf_titres)     # choc +100 pb
+
+# --- Durations du bilan ventilé et duration gap ---
+D_A  <- sum(actifs_b  * mid) / sum(actifs_b)
+D_P  <- sum(passifs_b * mid) / sum(passifs_b)
+DG   <- D_A - D_P * sum(passifs_b) / sum(actifs_b)
+dEVE <- -DG * sum(actifs_b) * 0.01 / (1 + i0)       # choc +100 pb
+
+tab_dur <- data.frame(
+  Indicateur = c("Duration du portefeuille de titres publics (années)",
+                 "Sensibilité du portefeuille de titres",
+                 "Perte de valeur du portefeuille pour +100 pb (M FCFA)",
+                 "Duration des actifs ventilés (années)",
+                 "Duration des passifs ventilés (années)",
+                 "Duration gap (années)",
+                 "Variation de l'EVE pour +100 pb (M FCFA)",
+                 "Variation de l'EVE pour +100 pb (en % des fonds propres)"),
+  Valeur = c(D_titres, S_titres, dV_titres, D_A, D_P, DG, dEVE,
+             100 * dEVE / 45669.5)
+)
+kable(tab_dur, booktabs = TRUE, digits = 2,
+      format.args = list(big.mark = " "),
+      caption = "Duration, sensibilité et impact valeur d'un choc de +100 pb", linesep = "")
+```
+
+Le portefeuille de titres publics (121,4 milliards) affiche une duration d'environ
+2,8 ans : un déplacement parallèle de $+100$ pb de la courbe lui ferait perdre de l'ordre
+de 3,2 milliards de F CFA (7\,\% des fonds propres) en valeur économique : une perte
+latente qui ne transite pas par le résultat tant que les titres, classés en investissement, sont
+portés à échéance, mais qui réduirait d'autant la valeur liquidative du collatéral mobilisable.
+Au niveau du bilan, le \textit{duration gap} positif ($\approx 2$ ans en vision contractuelle)
+confirme le profil de transformation : la valeur économique des fonds propres perdrait environ
+6,3 milliards ($-13{,}8\,\%$) pour un choc de $+100$ pb. Là encore, l'allongement
+comportemental de la duration des dépôts stables réduirait sensiblement ce gap : le calibrage des
+conventions d'écoulement est aussi structurant pour le risque de taux que pour la liquidité.
+
+\subsection{\textcolor{MidnightBlue}{Le risque de change}}
+
+```{r change, results='asis'}
+# --- Positions par devise (annexe 4.16, millions de F CFA, 31/12/2023) ---
+dev <- data.frame(
+  Devise = c("EUR", "USD", "CHF", "GBP", "CAD"),
+  Actif  = c(6148.5, 613.3, 15.8, 7.9, 0.2),
+  Passif = c(4909.9, 556.0,  0.0, 0.0, 0.6)
+)
+dev$Position <- dev$Actif - dev$Passif
+dev$`% des fonds propres` <- 100 * dev$Position / 45669.5
+
+kable(dev, booktabs = TRUE, digits = 2, format.args = list(big.mark = " "),
+      caption = "Positions de change au 31/12/2023 (millions de F CFA)", linesep = "")
+```
+
+Le bilan est libellé à plus de 98\,\% en F CFA. La position longue en euros
+($+1{,}24$ milliard) ne porte pas de risque économique du fait de la parité fixe F CFA/EUR. Les
+positions ouvertes en devises tierces (USD, CHF, GBP, CAD) totalisent moins de
+0,2\,\% des fonds propres effectifs : le risque de change est marginal, ce que confirme
+l'exigence nulle au titre du risque de marché dans le FODEP (état EP08, APR de change $= 0$).
+
+\newpage
+
+\section{\textcolor{MidnightBlue}{Solvabilité et conformité au dispositif prudentiel de l'UMOA}}
+
+\subsection{\textcolor{MidnightBlue}{Fonds propres effectifs et actifs pondérés des risques (FODEP au 31/12/2022)}}
+
+Le reporting FODEP de BOA Niger au 31/12/2022 (dernier arrêté prudentiel disponible) permet de
+vérifier la conformité aux normes du dispositif prudentiel de 2016 (à jour des dispositions
+transitoires, coussin de conservation de 2,5\,\% inclus).
+
+```{r fonds-propres, results='asis'}
+# ============================================================
+# FONDS PROPRES ET APR — FODEP BOA Niger au 31/12/2022 (EP02, EP03, EP08)
+# (millions de F CFA)
+# ============================================================
+fp <- data.frame(
+  Poste = c("Capital social libéré", "Primes liées au capital", "Autres réserves",
+            "Résultat bénéficiaire conservé", "Total CET1 avant déductions",
+            "(-) Immobilisations incorporelles nettes",
+            "FONDS PROPRES CET1 = T1 = FPE (aucun AT1 ni T2)"),
+  Montant = c(13000.0, 194.5, 20844.1, 1554.1, 35592.7, -1018.1, 34574.6)
+)
+kable(fp, booktabs = TRUE, digits = 1, format.args = list(big.mark = " "),
+      caption = "Calcul des fonds propres effectifs au 31/12/2022 (EP03, millions de F CFA)",
+      linesep = "")
+```
+
+```{r apr, results='asis'}
+apr <- data.frame(
+  `Catégorie de risque` = c("Risque de crédit -- institutions financières",
+                            "Risque de crédit -- entreprises",
+                            "Risque de crédit -- clientèle de détail",
+                            "Risque de crédit -- autres actifs",
+                            "Total risque de crédit",
+                            "Risque de marché",
+                            "Risque opérationnel (indicateur de base)",
+                            "TOTAL DES ACTIFS PONDÉRÉS DES RISQUES (APR)"),
+  Montant = c(6494.6, 83810.8, 36147.1, 22275.4, 148727.9, 0.0, 46171.1, 194899.0),
+  check.names = FALSE
+)
+kable(apr, booktabs = TRUE, digits = 1, format.args = list(big.mark = " "),
+      caption = "Actifs pondérés des risques au 31/12/2022 (EP08, millions de F CFA)",
+      linesep = "")
+```
+
+\subsection{\textcolor{MidnightBlue}{Tableau de conformité aux normes prudentielles}}
+
+```{r conformite, results='asis'}
+fpe <- 34574.6; apr_tot <- 194899.0
+conf <- data.frame(
+  Norme = c("Ratio CET1", "Ratio Tier 1", "Ratio de solvabilité total",
+            "Ratio de levier", "Division des risques (somme des grands risques)",
+            "Participation dans une entité commerciale (individuelle)",
+            "Immobilisations et participations / FPE",
+            "Prêts aux actionnaires, dirigeants et personnel"),
+  `Minimum / maximum` = c("minimum 7,5 %", "minimum 8,5 %", "minimum 11,5 %",
+                          "minimum 3 %", "maximum 8 fois le T1",
+                          "maximum 25 % du capital", "maximum 100 %",
+                          "maximum 20 % des FPE"),
+  `Niveau observé` = c("17,74 %", "17,74 %", "17,74 %", "7,67 %",
+                       "2,99 fois le T1", "5 %", "45,74 %", "0 %"),
+  Situation = rep("CONFORME", 8),
+  check.names = FALSE
+)
+kable(conf, booktabs = TRUE,
+      caption = "État de conformité aux normes prudentielles au 31/12/2022 (EP01)",
+      linesep = "")
+
+marge <- fpe - 0.115 * apr_tot
+cat("\nExcédent de fonds propres au-delà du minimum de 11,5 % :",
+    fmt(marge), "M FCFA\n")
+```
+
+BOA Niger est conforme à l'ensemble des normes du dispositif prudentiel avec des marges
+confortables : le ratio de solvabilité de 17,74\,\% excède de plus de 6 points le minimum
+réglementaire (coussin de conservation inclus), soit un excédent de fonds propres d'environ
+12,2 milliards de F CFA. Les fonds propres sont intégralement constitués de
+CET1, la qualité maximale, sans aucun recours à des instruments hybrides ou
+subordonnés. Le ratio de levier (7,67\,\%) est plus du double du minimum. On note toutefois une
+concentration élevée des grands risques (expositions $\geq 10\,\%$ du T1 totalisant
+3,95 fois le T1 en brut, 2,99 fois après atténuation), typique des économies à tissu productif
+étroit, et qui constitue le principal facteur de vulnérabilité du profil de solvabilité.
+
+\subsection{\textcolor{MidnightBlue}{Projection de la solvabilité au 31/12/2023}}
+
+```{r projection-2023, results='asis'}
+# --- Estimation des fonds propres CET1 à fin 2023 ---
+# Hypothèse : distribution de dividendes 2024 identique à 2023 (8 580 M, annexe 4.13)
+cet1_2023 <- 13000.0 + 194.5 + 22398.2 + (10076.7 - 8580.0) - 929.6
+
+# --- Scénarios d'APR 2023 (les crédits nets baissent de 5 %, le PNB moyen augmente) ---
+apr_scen  <- c(Baisse = 185000, Stable = 195000, Hausse = 205000)
+tab_proj  <- data.frame(
+  `Scénario d'APR 2023` = paste0(names(apr_scen), " (", fmt(apr_scen, 0), " M)"),
+  `Ratio de solvabilité estimé` = pct(100 * cet1_2023 / apr_scen),
+  check.names = FALSE
+)
+cat("Fonds propres CET1 estimés au 31/12/2023 :", fmt(cet1_2023), "M FCFA\n\n")
+kable(tab_proj, booktabs = TRUE,
+      caption = "Projection du ratio de solvabilité au 31/12/2023 (estimation)",
+      linesep = "")
+```
+
+Sous des hypothèses prudentes, le ratio de solvabilité 2023 resterait compris entre
+17,6\,\% et 19,5\,\% : la solvabilité n'est pas le facteur limitant de BOA Niger ; c'est
+la liquidité qui a constitué, en 2023, la contrainte active du bilan.
+
+\newpage
+
+\section{\textcolor{MidnightBlue}{Synthèse et recommandations ALM}}
+
+\subsection{\textcolor{MidnightBlue}{Tableau de bord synthétique}}
+
+```{r synthese, results='asis'}
+synth <- data.frame(
+  Dimension = c("Profitabilité", "Rentabilité", "Qualité du portefeuille",
+                "Liquidité contractuelle", "Liquidité ajustée / stress",
+                "Risque de taux (marge)", "Risque de taux (valeur)",
+                "Risque de change", "Solvabilité"),
+  `Indicateur clé` = c("Coefficient d'exploitation : 49,4 %",
+                       "ROE : 22,4 % ; ROA : 2,85 %",
+                       "Souffrances brutes : 10,3 % ; couverture : 47,2 %",
+                       "Impasse cumulée 1 an : -127,7 Mds",
+                       "Couverture du stress 1 mois : ~103 %",
+                       "+100 pb => MNI +0,2 Md (+1,0 %)",
+                       "Duration gap ~2 ans ; +100 pb => EVE -6,3 Mds",
+                       "Position ouverte hors EUR < 0,2 % des FPE",
+                       "Ratio de solvabilité : 17,74 % (min. 11,5 %)"),
+  Appréciation = c("Satisfaisante", "Très bonne", "À surveiller",
+                   "Transformation élevée", "Tendue mais gérable",
+                   "Modérée (asset sensitive)", "Significative",
+                   "Marginal", "Confortable"),
+  check.names = FALSE
+)
+kable(synth, booktabs = TRUE,
+      caption = "Tableau de bord ALM synthétique de BOA Niger (31/12/2023)", linesep = "")
+```
+
+\subsection{\textcolor{MidnightBlue}{Recommandations}}
+
+\begin{enumerate}
+  \item Reconstituer la base de dépôts et réduire la dépendance au guichet BCEAO. Le
+        refinancement banque centrale (68 milliards, 19\,\% du bilan) doit être ramené à un rôle
+        d'appoint : plan de reconquête commerciale des dépôts, diversification vers des ressources
+        interbancaires régionales et des lignes moyen-long terme d'institutions financières de
+        développement (l'encours IFI, 10,4 milliards, a diminué en 2023).
+  \item Reconstituer un coussin d'actifs liquides de haute qualité non grevés en vue de
+        la conformité au RLCT ($\geq 100\,\%$) : désencombrer progressivement le portefeuille de
+        titres publics du nantissement BCEAO à mesure du reflux du refinancement.
+  \item Allonger la ressource : émissions de dépôts à terme longs, voire d'un emprunt
+        obligataire subordonné (le passif ne comporte aujourd'hui ni titre émis ni dette
+        subordonnée), afin de résorber l'impasse de transformation au-delà d'un an et, au passage,
+        de diversifier la structure des fonds propres (T2).
+  \item Formaliser le dispositif ALM : comité ALCO à fréquence mensuelle, jeu de limites
+        internes (impasse de liquidité cumulée rapportée aux ressources par horizon, gap de taux
+        par bande, duration gap cible), conventions d'écoulement des dépôts documentées et
+        \textit{backtestées} sur l'épisode 2023, plan de financement d'urgence (\textit{Contingency
+        Funding Plan}) testé annuellement, et tarification interne des liquidités (TCI) intégrant
+        le coût réel de la ressource.
+  \item Surveiller la qualité des actifs et la concentration : porter le taux de
+        couverture des créances en souffrance au-delà de 60\,\%, encadrer les grands risques
+        (2,99 fois le T1) par des limites sectorielles et unitaires plus strictes, et suivre
+        l'exposition souveraine (titres + créances sur l'État : plus de 200 milliards en incluant
+        le portefeuille d'effets publics et les prêts à l'État de l'annexe 4.5) au regard du
+        risque de concentration mis en évidence par la crise de 2023.
+  \item Encadrer le risque de taux en valeur : fixer une duration cible du portefeuille
+        d'investissement (2,5--3 ans maximum), échelonner les tombées (\textit{laddering}) et
+        conditionner tout allongement à la reconstitution préalable du coussin de liquidité.
+\end{enumerate}
+
+\section{\textcolor{MidnightBlue}{Conclusion}}
+
+L'analyse ALM des états financiers 2023 de BOA Niger dresse le portrait d'une banque
+structurellement rentable et bien capitalisée, dont l'exercice 2023 a mis à nu la
+vulnérabilité classique du modèle de banque commerciale : la transformation. Le choc de
+liquidité consécutif à la crise politique et aux sanctions régionales s'est traduit par une fuite
+de 16,5\,\% des dépôts, absorbée grâce au collatéral souverain et au refinancement de la BCEAO,
+validant \textit{a posteriori} la fonction d'assurance du portefeuille d'effets publics, mais
+révélant l'absence de marges de sécurité autonomes. Les impasses de liquidité et de taux
+demeurent maîtrisables dès lors que le noyau stable des dépôts est correctement modélisé ; la
+solvabilité (17,74\,\%) offre, quant à elle, un amortisseur confortable. Les priorités du comité
+ALCO pour 2024--2025 sont dès lors claires : reconstituer la ressource clientèle et le
+coussin d'actifs liquides libres, allonger le passif, formaliser les limites internes et se
+préparer à l'entrée en vigueur pleine des normes de liquidité du dispositif prudentiel (RLCT,
+RLLT). La mise en œuvre de ces priorités, assortie du suivi trimestriel des indicateurs
+présentés dans ce rapport, permettra de restaurer les marges de sécurité du bilan tout en
+préservant la trajectoire de rentabilité de l'établissement.
+
+```{=tex}
+% --- Table des matières détaillée en fin de document ---
+\newpage
+\setcounter{tocdepth}{3}
+\renewcommand{\contentsname}{\textcolor{MidnightBlue}{Table des matières}}
+{\color{black}\tableofcontents}
+```
+
+```{r cleanup, include=FALSE}
+unlink(c("*.aux","*.log","*.out","*.toc","*.bbl","*.blg","*.synctex.gz"), recursive=TRUE)
+```
