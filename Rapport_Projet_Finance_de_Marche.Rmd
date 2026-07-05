@@ -1,0 +1,304 @@
+---
+title: "PROJET ENSAE — EXAMEN DE FINANCE DE MARCHÉ"
+subtitle: "Professeur : M. Ousmane Diallo"
+author: "Sié Rachid Traoré"
+date: "`r format(Sys.Date(), '%d/%m/%Y')`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+    number_sections: false
+    theme: null
+    css: null
+---
+
+<style>
+:root { --jaune: #FFFFCC; --vert: #CCFFCC; --vert-fonce: #38761D; --or-fonce: #B8860B; }
+body { font-family: "Segoe UI", Arial, sans-serif; color: #1a1a1a; max-width: 960px;
+       margin: auto; padding: 0 16px; line-height: 1.55; }
+h1, h2 { background: var(--jaune); padding: 8px 12px; border-left: 6px solid var(--vert-fonce); }
+h3 { color: var(--vert-fonce); }
+table { border-collapse: collapse; margin: 12px 0; }
+th { background: var(--jaune); border: 1px solid #808080; padding: 5px 10px; }
+td { border: 1px solid #808080; padding: 5px 10px; }
+tr:nth-child(even) td { background: var(--vert); }
+.reponse { background: var(--vert); border-left: 6px solid var(--vert-fonce);
+           padding: 10px 14px; margin: 12px 0; font-weight: 600; }
+code, pre { background: #f6f6ee; }
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE,
+                      fig.width = 7.5, fig.height = 5, dev = "png", dpi = 110)
+# Palette autorisée (couleurs du Rmd) : jaune pâle, vert pâle et leurs déclinaisons foncées
+jaune <- "#FFFFCC"; vert <- "#CCFFCC"; vfonce <- "#38761D"; ofonce <- "#B8860B"
+```
+
+# Exercice 1
+
+### 1. Price Earnings Ratio (PER)
+
+$$PER = \frac{P_0}{BPA} = \frac{\text{Capitalisation boursière}}{\text{Bénéfice total}}$$
+
+Un PER de 10 signifie que le marché valorise l'entreprise à 10 fois son bénéfice ; plus le PER
+est élevé, plus l'action est chère.
+
+### 2. Modèle de Gordon-Shapiro
+
+$$P_0 = \frac{D_1}{k - g} \qquad \Longleftrightarrow \qquad k = \frac{D_1}{P_0} + g$$
+
+avec $P_0$ le cours actuel, $D_1$ le dividende attendu dans un an, $k$ le taux de rentabilité
+exigé et $g$ le taux de croissance perpétuel des dividendes ($g < k$).
+
+### 3. Ratio de Sharpe
+
+$$Sharpe = \frac{E(R_p) - R_f}{\sigma_p}$$
+
+excès de rentabilité espérée par unité de risque total.
+
+### 4. Formule du MEDAF
+
+$$E(R_i) = R_f + \beta_i \left[ E(R_M) - R_f \right]$$
+
+* $E(R_i)$ : rentabilité exigée du titre $i$ ;
+* $R_f$ : taux sans risque ;
+* $E(R_M)$ : rentabilité espérée du portefeuille de marché ;
+* $E(R_M) - R_f$ : prime de risque du marché ;
+* $\beta_i$ : sensibilité du titre $i$ aux variations du marché (risque systématique).
+
+### 5. Société MIM — taux de rentabilité exigé
+
+```{r mim}
+D1 <- 2; P0 <- 20; g <- 0.06
+k <- D1/P0 + g
+k
+```
+
+<div class="reponse">k = 2/20 + 6 % = **16 %**.</div>
+
+### 6. Bêta d'un titre i
+
+$$\beta_i = \frac{Cov(R_i , R_M)}{Var(R_M)}$$
+
+$\beta > 1$ : titre plus volatil que le marché ; $\beta < 1$ : titre défensif ;
+$\beta = 1$ : le titre varie comme le marché.
+
+### 7. Bêta de l'action
+
+Rentabilités périodiques $R_t = P_t/P_{t-1} - 1$, puis $\beta = Cov(R_i,R_M)/Var(R_M)$ :
+
+```{r beta}
+cours  <- c(39.56,39.97,40.76,38.54,41.65,42.78,46.23,45.82,
+            48.93,50.45,50.87,53.76,55.63,56.39,51.03,53.76)
+indice <- c(5046,5035,5103,5011,5126,5246,5388,5346,
+            5526,5521,5534,5490,5389,5425,5109,5288)
+Ri <- diff(cours)/head(cours, -1)
+RM <- diff(indice)/head(indice, -1)
+beta <- cov(Ri, RM)/var(RM)
+beta
+```
+
+<div class="reponse">β ≈ **1,61**.</div>
+
+**Rentabilité avec un taux sans risque de 0,2 %** — MEDAF, avec $E(R_M)$ = moyenne des
+rentabilités de l'indice sur l'échantillon (0,34 % par période) :
+
+```{r medaf}
+Rf <- 0.002
+Rf + beta*(mean(RM) - Rf)
+```
+
+<div class="reponse">E(R<sub>i</sub>) = 0,2 % + 1,61 × (0,34 % − 0,2 %) ≈ **0,43 % par période**.</div>
+
+# Exercice 2
+
+Capital de 100 000 € ; $r_f = 0{,}06$ ; $E(r_A) = 0{,}14$ ; $\sigma_A = 0{,}203$.
+Pour une fraction $X$ investie dans l'actif risqué :
+
+$$E(r_p) = r_f + X\,[E(r_A) - r_f] \qquad ; \qquad \sigma_p = X\,\sigma_A$$
+
+### 1/ Rentabilité espérée et écart type de chaque portefeuille
+
+La proportion investie dans l'actif risqué dépend du portefeuille choisi (F, G, H, I ou S) :
+
+```{r ex2}
+rf <- 0.06; muA <- 0.14; sigA <- 0.203; W <- 100000
+X  <- c(F = 0, G = 0.25, H = 0.50, I = 0.75, S = 1)
+tab2 <- data.frame(
+  Portefeuille        = names(X),
+  `X actif risqué`    = paste0(100*X, " %"),
+  `Montant risqué (€)`= W*X,
+  `E(rp)`             = rf + X*(muA - rf),
+  `Sigma p`           = X*sigA, check.names = FALSE)
+knitr::kable(tab2, digits = 4, row.names = FALSE)
+```
+
+### 2/ Courbe de la rentabilité en fonction du risque
+
+```{r ex2plot}
+sig <- X*sigA ; mu <- rf + X*(muA - rf)
+par(bg = "white", mar = c(4.5, 4.5, 3, 1))
+plot(sig, mu, type = "o", lwd = 2, pch = 19, cex = 1.3,
+     col = vfonce, xlab = expression(sigma[p]~"(risque)"),
+     ylab = expression(E(r[p])~"(rentabilité espérée)"),
+     main = "Rentabilité en fonction du risque",
+     panel.first = rect(par("usr")[1], par("usr")[3], par("usr")[2],
+                        par("usr")[4], col = "#FFFFEE", border = NA))
+text(sig, mu, names(X), pos = 3, col = vfonce, font = 2)
+xJ <- (0.09 - rf)/(muA - rf)
+points(xJ*sigA, 0.09, pch = 17, cex = 1.6, col = ofonce)
+text(xJ*sigA, 0.09, "J", pos = 1, col = ofonce, font = 2)
+```
+
+### 3/ Portefeuille J de rentabilité 0,09
+
+$$X_J = \frac{0{,}09-0{,}06}{0{,}14-0{,}06} = 37{,}5\,\% \qquad ; \qquad
+\sigma_J = X_J\,\sigma_A$$
+
+```{r ex2J}
+xJ <- (0.09 - rf)/(muA - rf)
+c(X_J = xJ, montant = W*xJ, sigma_J = xJ*sigA)
+```
+
+<div class="reponse">**37 500 €** seront investis en actif risqué (62 500 € en actif sans
+risque). Risque associé : σ<sub>J</sub> = 0,375 × 0,203 ≈ **0,0761 (7,61 %)**.</div>
+
+# Exercice 3
+
+$\mu_1 = 0{,}14$, $\sigma_1 = 0{,}20$ ; $\mu_2 = 0{,}08$, $\sigma_2 = 0{,}15$ ; $\rho_{12} = 0$.
+
+$$E(r_p) = X_1\mu_1 + X_2\mu_2 \qquad ; \qquad
+\sigma_p = \sqrt{X_1^2\sigma_1^2 + X_2^2\sigma_2^2}$$
+
+### 1/ Rentabilité espérée et écart type de chaque portefeuille
+
+```{r ex3}
+mu1 <- 0.14; mu2 <- 0.08; s1 <- 0.20; s2 <- 0.15
+X1 <- c(R = 0, C = 0.25, `Risque minimum` = 0.36, D = 0.50, S = 1)
+tab3 <- data.frame(
+  Portefeuille = names(X1),
+  `X1 (actif 1)` = paste0(100*X1, " %"),
+  `X2 (actif 2)` = paste0(100*(1 - X1), " %"),
+  `E(rp)`   = X1*mu1 + (1 - X1)*mu2,
+  `Sigma p` = sqrt(X1^2*s1^2 + (1 - X1)^2*s2^2), check.names = FALSE)
+knitr::kable(tab3, digits = 4, row.names = FALSE)
+```
+
+(On vérifie : $X_1^\ast = \sigma_2^2/(\sigma_1^2 + \sigma_2^2) = 0{,}0225/0{,}0625 = 36\,\%$.)
+
+### 2/ Courbe de la rentabilité en fonction du risque — interprétation
+
+```{r ex3plot}
+g  <- seq(0, 1, by = 0.01)
+Ef <- g*mu1 + (1 - g)*mu2
+Sf <- sqrt(g^2*s1^2 + (1 - g)^2*s2^2)
+Ep <- X1*mu1 + (1 - X1)*mu2
+Sp <- sqrt(X1^2*s1^2 + (1 - X1)^2*s2^2)
+par(bg = "white", mar = c(4.5, 4.5, 3, 1))
+plot(Sf, Ef, type = "l", lwd = 2.5, col = vfonce,
+     xlab = expression(sigma[p]~"(risque)"),
+     ylab = expression(E(r[p])~"(rentabilité espérée)"),
+     main = "Rentabilité en fonction du risque — 2 actifs risqués",
+     panel.first = rect(par("usr")[1], par("usr")[3], par("usr")[2],
+                        par("usr")[4], col = "#FFFFEE", border = NA))
+points(Sp, Ep, pch = 18, cex = 1.8, col = ofonce)
+text(Sp, Ep, names(X1), pos = 4, col = ofonce, font = 2)
+```
+
+<div class="reponse">**Interprétation** : avec ρ = 0, la diversification réduit le risque. Le
+portefeuille « Risque minimum » (36 %/64 %) a un écart type de **12 %**, inférieur au risque de
+chacun des deux actifs (20 % et 15 %), pour une rentabilité de 10,16 %. Le portefeuille R est
+dominé (risque 15 % pour 8 % de rentabilité) : la branche inférieure de la courbe est
+inefficiente, la frontière efficiente va du portefeuille de variance minimale à S.</div>
+
+# Exercice 4
+
+Obligation : $VN = 1\,000$ €, $N = 15$ ans, coupon annuel $C = 100$ €.
+
+$$P = \frac{C}{r}\left[1 - \frac{1}{(1+r)^N}\right] + \frac{VN}{(1+r)^N}$$
+
+### 1- Prix pour un taux de rendement à échéance de 8,5 %
+
+```{r ex4a}
+prix <- function(r, C = 100, VN = 1000, N = 15)
+  C/r*(1 - (1 + r)^-N) + VN*(1 + r)^-N
+prix(0.085)
+```
+
+<div class="reponse">P = **1 124,56 €**.</div>
+
+### 2- Taux de rendement si le prix de marché est 1 080,61 €
+
+On cherche $r$ tel que $P(r) = 1\,080{,}61$ :
+
+```{r ex4b}
+uniroot(function(r) prix(r) - 1080.61, c(0.01, 0.20), tol = 1e-10)$root
+```
+
+<div class="reponse">TRE = **9 %**.</div>
+
+### 3- Incidence d'un passage du taux de 8,5 % à 9,5 %
+
+```{r ex4c}
+P85 <- prix(0.085); P95 <- prix(0.095)
+c(P95 = P95, variation = P95 - P85, pct = 100*(P95 - P85)/P85)
+```
+
+<div class="reponse">Le prix passe de 1 124,56 € à **1 039,14 €**, soit **−85,42 €**. Le
+pourcentage de variation pour une hausse de 1 % du taux d'intérêt est
+**ΔP/P = −7,60 %**.</div>
+
+# Exercice 5
+
+Cox-Ross-Rubinstein : call européen ; $K = 98$ ; $T = 0{,}25$ ; $S_0 = 100$ ; $\sigma = 20\,\%$ ;
+$r = 5\,\%$ (continu) ; $q = 6\,\%$ (revenu continu) ; $n = 3$ ; $\Delta t = T/n = 1/12$.
+
+### 1) Coefficients Up et Down, probabilités p et 1−p
+
+$$u = e^{\sigma\sqrt{\Delta t}} \qquad ; \qquad d = \frac{1}{u}
+\qquad ; \qquad p = \frac{e^{(r-q)\Delta t} - d}{u - d}$$
+
+Sous Excel : `u = EXP(volatilité*RACINE(durée/n))` ; `d = 1/u` ;
+`p = (EXP((taux−revenu)*durée/n) − d)/(u − d)`.
+
+```{r ex5a}
+S0 <- 100; K <- 98; T <- 0.25; sig <- 0.20; r <- 0.05; q <- 0.06; n <- 3
+dt <- T/n
+u  <- exp(sig*sqrt(dt)); d <- 1/u
+p  <- (exp((r - q)*dt) - d)/(u - d)
+c(u = u, d = d, p = p, `1-p` = 1 - p)
+```
+
+<div class="reponse">u = **1,0594** ; d = **0,9439** ; p = **0,4784** ; 1 − p = **0,5216**.</div>
+
+### 2) Prix du sous-jacent à 3 périodes
+
+$S_0\,u^j d^{\,3-j}$ pour $j$ hausses :
+
+```{r ex5b}
+S3 <- S0*u^(3:0)*d^(0:3)
+names(S3) <- c("u³", "u²d", "ud²", "d³")
+S3
+```
+
+<div class="reponse">S·u³ = **118,91** ; S·u²d = **105,94** ; S·ud² = **94,39** ;
+S·d³ = **84,10**.</div>
+
+### Call Standard Européen
+
+$C_{i,j} = e^{-r\Delta t}\left[p\,C_{i+1,j+1} + (1-p)\,C_{i+1,j}\right]$, avec
+$C_{3,j} = \max(S_0u^jd^{3-j} - K,\ 0)$ :
+
+```{r ex5c}
+Cj <- pmax(S0*u^(0:n)*d^(n:0) - K, 0)
+for (i in (n - 1):0) Cj <- exp(-r*dt)*(p*Cj[-1] + (1 - p)*head(Cj, -1))
+Cj
+```
+
+<div class="reponse">C₀ ≈ **5,07 €**.</div>
+
+---
+
+*Rapport généré à partir du fichier `Rapport_Projet_Finance_de_Marche.Rmd`. Palette autorisée :
+jaune pâle `#FFFFCC`, vert pâle `#CCFFCC` et leurs déclinaisons foncées `#38761D` / `#B8860B`.
+Les calculs sous forme de formules Excel figurent dans `Projet_ENSAE_Finance_de_Marche.xlsx`.*
