@@ -15,18 +15,68 @@ output:
 <style>
 :root { --beige: #F1E8D8; --blanc-casse: #FAF7F0; --orange: #E87722;
         --orange-fonce: #C55A11; --gris: #595959; --gris-clair: #E7E5E0; }
-body { font-family: "Segoe UI", Arial, sans-serif; color: #3b3b3b; max-width: 960px;
-       margin: auto; padding: 0 16px; line-height: 1.55; background: var(--blanc-casse); }
-h1, h2 { background: var(--beige); padding: 8px 12px; border-left: 6px solid var(--orange); }
-h3 { color: var(--orange-fonce); }
-table { border-collapse: collapse; margin: 12px auto; background: #fff; }
+@page { size: A4; margin: 2cm 1.8cm; }
+body { font-family: Georgia, "Times New Roman", serif; color: #2b2b2b;
+       margin: 0; line-height: 1.6; font-size: 12pt; text-align: justify; }
+header#title-block-header { display: none; }
+h1 { background: var(--beige); padding: 10px 14px; border-left: 8px solid var(--orange);
+     page-break-before: always; font-size: 17pt; }
+h2 { color: var(--orange-fonce); font-size: 14pt; }
+h3 { color: var(--orange-fonce); font-size: 12.5pt; margin-top: 22px; }
+table { border-collapse: collapse; margin: 14px auto; background: #fff;
+        page-break-inside: avoid; }
 th { background: var(--beige); border: 1px solid var(--gris); padding: 5px 12px; }
 td { border: 1px solid var(--gris); padding: 5px 12px; }
 tr:nth-child(even) td { background: var(--gris-clair); }
 .reponse { background: var(--beige); border-left: 6px solid var(--orange);
-           padding: 10px 14px; margin: 12px 0; font-weight: 600; }
-img { display: block; margin: 10px auto; max-width: 100%; }
+           padding: 10px 14px; margin: 12px 0; font-weight: 600;
+           page-break-inside: avoid; }
+img { display: block; margin: 12px auto; max-width: 100%; page-break-inside: avoid; }
+
+.garde { height: 22.8cm; page-break-after: always; text-align: center;
+         display: flex; flex-direction: column; justify-content: space-between;
+         background: var(--blanc-casse); border: 2px solid var(--orange);
+         padding: 1.6cm 1.2cm; box-sizing: border-box; }
+.garde .ecole { color: var(--gris); font-size: 13pt; letter-spacing: 2px;
+                border-bottom: 2px solid var(--orange); padding-bottom: 10px; }
+.garde .titre { font-size: 23pt; font-weight: bold; color: var(--orange-fonce);
+                margin: 0.4cm 0 0.2cm; }
+.garde .soustitre { font-size: 14pt; color: var(--gris); }
+.garde .cadre { background: var(--beige); border-left: 8px solid var(--orange);
+                padding: 14px 20px; text-align: left; display: inline-block;
+                margin: 0 auto; font-size: 12.5pt; }
+.garde .annee { color: var(--gris); font-size: 12pt; letter-spacing: 1px;
+                border-top: 2px solid var(--orange); padding-top: 10px; }
+.sommaire { page-break-after: always; }
+.sommaire h2 { background: var(--beige); padding: 8px 12px;
+               border-left: 8px solid var(--orange); color: #2b2b2b; }
+.sommaire ol { font-size: 13pt; line-height: 2.1; }
 </style>
+
+<div class="garde">
+<div class="ecole">ÉCOLE NATIONALE SUPÉRIEURE DE STATISTIQUE ET D'ÉCONOMIE APPLIQUÉE</div>
+<div>
+<div class="titre">FINANCE DE MARCHÉ</div>
+<div class="soustitre">Résolution de l'examen — Exercices 1 à 5</div>
+</div>
+<div class="cadre">
+<b>Rédigé par :</b> Sié Rachid Traoré<br/>
+<b>Sous la supervision de :</b> M. Ousmane Diallo<br/>
+<b>Date :</b> `r format(Sys.Date(), '%d/%m/%Y')`
+</div>
+<div class="annee">Année académique 2025 – 2026</div>
+</div>
+
+<div class="sommaire">
+<h2>Sommaire</h2>
+<ol>
+<li>Exercice 1 — PER, Gordon-Shapiro, ratio de Sharpe, MEDAF, bêta</li>
+<li>Exercice 2 — Portefeuille actif sans risque / actif risqué</li>
+<li>Exercice 3 — Portefeuille de deux actifs risqués</li>
+<li>Exercice 4 — Évaluation d'une obligation</li>
+<li>Exercice 5 — Modèle de Cox-Ross-Rubinstein à 3 périodes</li>
+</ol>
+</div>
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE,
