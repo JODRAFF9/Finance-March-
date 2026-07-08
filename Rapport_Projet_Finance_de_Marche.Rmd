@@ -13,69 +13,114 @@ output:
 ---
 
 <style>
-:root { --beige: #F1E8D8; --blanc-casse: #FAF7F0; --orange: #E87722;
-        --orange-fonce: #C55A11; --gris: #595959; --gris-clair: #E7E5E0; }
-@page { size: A4; margin: 2cm 1.8cm; }
-body { font-family: Georgia, "Times New Roman", serif; color: #2b2b2b;
-       margin: 0; line-height: 1.6; font-size: 12pt; text-align: justify; }
+:root { --beige: #F1E8D8; --creme: #F7F3E7; --orange: #E87722;
+        --orange-fonce: #B35309; --gris: #595959; --encre: #3F3F3F; }
+@page { size: A4; }
+html { background: var(--creme); }
+body { font-family: Helvetica, Arial, sans-serif; color: #2b2b2b;
+       margin: 0; line-height: 1.55; font-size: 11pt; text-align: justify;
+       background: var(--creme); counter-reset: sec; }
 header#title-block-header { display: none; }
-h1 { background: var(--beige); padding: 10px 14px; border-left: 8px solid var(--orange);
-     page-break-before: always; font-size: 17pt; }
-h2 { color: var(--orange-fonce); font-size: 14pt; }
-h3 { color: var(--orange-fonce); font-size: 12.5pt; margin-top: 22px; }
+
+.lateral { position: fixed; left: -4mm; top: 40%; transform: rotate(-90deg);
+           transform-origin: left top; color: #cfc9bb; font-size: 7.5pt;
+           letter-spacing: 3px; font-variant: small-caps; white-space: nowrap; }
+
+h1 { counter-increment: sec; page-break-before: always;
+     background: none; color: var(--encre); font-size: 14pt;
+     border-bottom: 2.5px solid var(--orange); padding: 0 0 7px 0; }
+h1::before { content: "Exercice " counter(sec); background: var(--encre);
+             color: #fff; padding: 4px 14px; margin-right: 14px;
+             font-size: 12pt; }
+h2 { color: var(--encre); font-size: 12.5pt; }
+h3 { color: var(--encre); font-size: 11.5pt; margin-top: 20px;
+     border-left: 4px solid var(--orange); padding-left: 8px; }
+
 table { border-collapse: collapse; margin: 14px auto; background: #fff;
-        page-break-inside: avoid; }
-th { background: var(--beige); border: 1px solid var(--gris); padding: 5px 12px; }
-td { border: 1px solid var(--gris); padding: 5px 12px; }
-tr:nth-child(even) td { background: var(--gris-clair); }
-.reponse { background: var(--beige); border-left: 6px solid var(--orange);
-           padding: 10px 14px; margin: 12px 0; font-weight: 600;
-           page-break-inside: avoid; }
+        page-break-inside: avoid; font-size: 10.5pt; }
+th { background: var(--orange); color: #fff; border: none; padding: 5px 14px; }
+td { border: none; border-bottom: 1px solid #e2dccc; padding: 5px 14px; }
+tr:nth-child(even) td { background: var(--creme); }
+table { border-bottom: 2px solid var(--encre); border-top: 2px solid var(--encre); }
+
+.reponse { background: #fff; border: 1.5px solid var(--gris); border-radius: 9px;
+           border-left: 7px solid var(--orange); padding: 10px 16px;
+           margin: 14px 0; font-weight: 600; page-break-inside: avoid; }
 img { display: block; margin: 12px auto; max-width: 100%; page-break-inside: avoid; }
 
-.garde { height: 22.8cm; page-break-after: always; text-align: center;
-         display: flex; flex-direction: column; justify-content: space-between;
-         background: var(--blanc-casse); border: 2px solid var(--orange);
-         padding: 1.6cm 1.2cm; box-sizing: border-box; }
-.garde .ecole { color: var(--gris); font-size: 13pt; letter-spacing: 2px;
-                border-bottom: 2px solid var(--orange); padding-bottom: 10px; }
-.garde .titre { font-size: 23pt; font-weight: bold; color: var(--orange-fonce);
-                margin: 0.4cm 0 0.2cm; }
-.garde .soustitre { font-size: 14pt; color: var(--gris); }
-.garde .cadre { background: var(--beige); border-left: 8px solid var(--orange);
-                padding: 14px 20px; text-align: left; display: inline-block;
-                margin: 0 auto; font-size: 12.5pt; }
-.garde .annee { color: var(--gris); font-size: 12pt; letter-spacing: 1px;
-                border-top: 2px solid var(--orange); padding-top: 10px; }
-.sommaire { page-break-after: always; }
-.sommaire h2 { background: var(--beige); padding: 8px 12px;
-               border-left: 8px solid var(--orange); color: #2b2b2b; }
-.sommaire ol { font-size: 13pt; line-height: 2.1; }
+/* ---------- page de garde ---------- */
+.garde { height: 23.1cm; page-break-after: always; text-align: center;
+         background: #fdfcf9; border: 2px solid var(--gris); outline: 1px solid var(--orange);
+         outline-offset: -6px; padding: 1.1cm 1.2cm; box-sizing: border-box;
+         display: flex; flex-direction: column; justify-content: space-between; }
+.garde .pays { font-variant: small-caps; font-size: 13pt; letter-spacing: 1px; }
+.garde .devise { font-size: 10pt; color: var(--gris); }
+.garde .inst { font-weight: bold; font-size: 11.5pt; margin-top: 0.45cm; }
+.garde .titre { background: var(--encre); color: #fff; font-weight: bold;
+                font-size: 17pt; padding: 12px 26px; display: inline-block;
+                margin: 0.25cm auto 0.12cm; }
+.garde .soustitre { font-style: italic; font-size: 12pt; }
+.garde .signatures { display: flex; justify-content: space-between;
+                     text-align: left; font-size: 10.5pt; margin-top: 0.4cm; }
+.garde .signatures .droite { text-align: right; align-self: flex-end; }
+.garde .role { font-style: italic; color: var(--orange-fonce); }
+.garde .nom { font-weight: bold; }
+.garde .statut { font-variant: small-caps; font-size: 9pt; color: var(--gris); }
+.garde .datefin { font-weight: bold; font-size: 12pt;
+                  border-top: 1.5px solid var(--gris); display: inline-block;
+                  padding-top: 8px; }
+
+/* ---------- sommaire ---------- */
+.sommaire { page-break-after: always; background: #fff; border: 1.5px solid var(--gris);
+            border-radius: 10px; padding: 14px 26px 20px; margin-top: 8px; }
+.sommaire h2 { color: var(--encre); border-bottom: 2px solid var(--orange);
+               padding-bottom: 6px; margin: 4px 0 12px; }
+.sommaire table.toc { border: none; margin: 0; width: 100%; background: none; font-size: 11.5pt; }
+.sommaire table.toc td { border: none; padding: 6px 2px; background: none; font-weight: bold;
+                         color: var(--encre); }
+.sommaire table.toc td.num { color: var(--orange-fonce); width: 1.4em; }
+.sommaire table.toc td.pg { text-align: right; width: 2em; }
 </style>
 
+<div class="lateral">ENSAE Pierre Ndiaye — Ingénieur Statisticien Économiste — Promo 2026</div>
+
 <div class="garde">
-<div class="ecole">ÉCOLE NATIONALE SUPÉRIEURE DE STATISTIQUE ET D'ÉCONOMIE APPLIQUÉE</div>
 <div>
-<div class="titre">FINANCE DE MARCHÉ</div>
-<div class="soustitre">Résolution de l'examen — Exercices 1 à 5</div>
+<div class="pays">République du Sénégal</div>
+<div class="devise">Un Peuple - Un But - Une Foi</div>
+<div class="inst">Agence Nationale de la Statistique et de la Démographie (ANSD)</div>
+<div class="inst">École Nationale de la Statistique et de l'Analyse Économique Pierre Ndiaye (ENSAE)</div>
 </div>
-<div class="cadre">
-<b>Rédigé par :</b> Sié Rachid Traoré<br/>
-<b>Sous la supervision de :</b> M. Ousmane Diallo<br/>
-<b>Date :</b> `r format(Sys.Date(), '%d/%m/%Y')`
+<div>
+<div class="titre">Projet de Finance de Marché</div><br/>
+<div class="soustitre">« Résolution de l'examen de finance de marché — Exercices 1 à 5 »</div>
 </div>
-<div class="annee">Année académique 2025 – 2026</div>
+<div>
+<div class="signatures">
+<div>
+<div class="role">Rédigé par :</div>
+<div class="nom">Sié Rachid Traoré</div>
+<div class="statut">Élève Ingénieur Statisticien Économiste<br/>Option Finance &amp; Actuariat</div>
+</div>
+<div class="droite">
+<div class="role">Sous la supervision de :</div>
+<div class="nom">M. Ousmane Diallo</div>
+<div class="statut">Enseignant</div>
+</div>
+</div>
+</div>
+<div><span class="datefin">Juillet 2026</span></div>
 </div>
 
 <div class="sommaire">
 <h2>Sommaire</h2>
-<ol>
-<li>Exercice 1 — PER, Gordon-Shapiro, ratio de Sharpe, MEDAF, bêta</li>
-<li>Exercice 2 — Portefeuille actif sans risque / actif risqué</li>
-<li>Exercice 3 — Portefeuille de deux actifs risqués</li>
-<li>Exercice 4 — Évaluation d'une obligation</li>
-<li>Exercice 5 — Modèle de Cox-Ross-Rubinstein à 3 périodes</li>
-</ol>
+<table class="toc">
+<tr><td class="num">1</td><td>Exercice 1 — PER, Gordon-Shapiro, ratio de Sharpe, MEDAF, bêta</td><td class="pg">3</td></tr>
+<tr><td class="num">2</td><td>Exercice 2 — Portefeuille actif sans risque / actif risqué</td><td class="pg">5</td></tr>
+<tr><td class="num">3</td><td>Exercice 3 — Portefeuille de deux actifs risqués</td><td class="pg">7</td></tr>
+<tr><td class="num">4</td><td>Exercice 4 — Évaluation d'une obligation</td><td class="pg">9</td></tr>
+<tr><td class="num">5</td><td>Exercice 5 — Modèle de Cox-Ross-Rubinstein à 3 périodes</td><td class="pg">10</td></tr>
+</table>
 </div>
 
 ```{r setup, include=FALSE}
@@ -88,7 +133,7 @@ fr <- function(x, d = 2) formatC(x, digits = d, format = "f", big.mark = " ", de
 pct <- function(x, d = 2) paste0(fr(100*x, d), " %")
 ```
 
-# Exercice 1
+# PER, Gordon-Shapiro, ratio de Sharpe, MEDAF et bêta
 
 ### 1. Price Earnings Ratio (PER)
 
@@ -168,7 +213,7 @@ $$E(R_i) = 0{,}2\,\% + `r fr(beta,2)` \times (`r pct(mean(RM))` - 0{,}2\,\%)$$
 
 <div class="reponse">E(R<sub>i</sub>) ≈ **`r pct(ERi)` par période**.</div>
 
-# Exercice 2
+# Portefeuille actif sans risque / actif risqué
 
 Capital de 100 000 € ; $r_f = 0{,}06$ ; $E(r_A) = 0{,}14$ ; $\sigma_A = 0{,}203$.
 Pour une fraction $X$ investie dans l'actif risqué :
@@ -217,7 +262,7 @@ $$X_J = \frac{0{,}09-0{,}06}{0{,}14-0{,}06} = 37{,}5\,\% \qquad ; \qquad
 <div class="reponse">**37 500 €** seront investis en actif risqué (62 500 € en actif sans
 risque). Risque associé : σ<sub>J</sub> ≈ **0,0761 (7,61 %)**.</div>
 
-# Exercice 3
+# Portefeuille de deux actifs risqués
 
 $\mu_1 = 0{,}14$, $\sigma_1 = 0{,}20$ ; $\mu_2 = 0{,}08$, $\sigma_2 = 0{,}15$ ; $\rho_{12} = 0$.
 
@@ -265,7 +310,7 @@ chacun des deux actifs (20 % et 15 %), pour une rentabilité de 10,16 %. Le port
 dominé (risque 15 % pour 8 % de rentabilité) : la branche inférieure de la courbe est
 inefficiente, la frontière efficiente va du portefeuille de variance minimale à S.</div>
 
-# Exercice 4
+# Évaluation d'une obligation
 
 Obligation : $VN = 1\,000$ €, $N = 15$ ans, coupon annuel $C = 100$ €.
 
@@ -296,7 +341,7 @@ On cherche $r$ tel que $P(r) = 1\,080{,}61$ (taux qui annule la VAN).
 **`r fr(P95 - P85)` €**. Le pourcentage de variation pour une hausse de 1 % du taux
 d'intérêt est **ΔP/P = `r pct((P95 - P85)/P85)`**.</div>
 
-# Exercice 5
+# Modèle de Cox-Ross-Rubinstein à 3 périodes
 
 Cox-Ross-Rubinstein : call européen ; $K = 98$ ; $T = 0{,}25$ ; $S_0 = 100$ ; $\sigma = 20\,\%$ ;
 $r = 5\,\%$ (continu) ; $q = 6\,\%$ (revenu continu) ; $n = 3$ ; $\Delta t = T/n = 1/12$.
