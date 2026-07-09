@@ -298,7 +298,6 @@ theme_alm <- theme_minimal(base_size = 10) +
         legend.position = "bottom")
 ```
 
-\newpage
 
 \section{\textcolor{MidnightBlue}{PER, Gordon-Shapiro, Sharpe, MEDAF et bêta}}
 
@@ -388,7 +387,6 @@ $E(R_i) = 0{,}2\,\% + `r fmt(beta)` \times (`r pctx(100*mean(RM))` - 0{,}2\,\%)
 \approx \mathbf{`r pctx(100*ERi)`}$ par période.
 \end{reponse}
 
-\newpage
 
 \section{\textcolor{MidnightBlue}{Portefeuille actif sans risque / actif risqué}}
 
@@ -457,7 +455,6 @@ Le risque associé est $\sigma_J = 0{,}375 \times 0{,}203 \approx \mathbf{0{,}07
 (7,61\,\%).
 \end{reponse}
 
-\newpage
 
 \section{\textcolor{MidnightBlue}{Portefeuille de deux actifs risqués}}
 
@@ -518,7 +515,6 @@ inférieure de la courbe est inefficiente ; la frontière efficiente va du porte
 variance minimale au portefeuille S.
 \end{reponse}
 
-\newpage
 
 \section{\textcolor{MidnightBlue}{Évaluation d'une obligation}}
 
@@ -585,7 +581,6 @@ $`r fmt(P95 - P85)`$\,€. Le pourcentage de variation de l'obligation pour une 
 c'est le risque de taux, le prix et le taux variant en sens inverse.
 \end{reponse}
 
-\newpage
 
 \section{\textcolor{MidnightBlue}{Modèle de Cox-Ross-Rubinstein à 3 périodes}}
 
@@ -662,14 +657,6 @@ kable(arbre_c, booktabs = TRUE, linesep = "", row.names = FALSE, align = "c",
 \begin{reponse}
 Le call standard européen vaut $C_0 \approx \mathbf{`r fmt(C0)`}$\,\textbf{€}.
 \end{reponse}
-
-```{=tex}
-% --- Table des matières détaillée en fin de document ---
-\newpage
-\setcounter{tocdepth}{3}
-\renewcommand{\contentsname}{\textcolor{MidnightBlue}{Table des matières}}
-{\color{black}\tableofcontents}
-```
 
 ```{r cleanup, include=FALSE}
 unlink(c("*.aux","*.log","*.out","*.toc","*.bbl","*.blg","*.synctex.gz"), recursive=TRUE)
