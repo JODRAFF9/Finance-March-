@@ -1,0 +1,10 @@
+# Artefacts de compilation LaTeX / R Markdown
+*.log
+*.aux
+*.out
+*.toc
+*.lot
+*.lof
+*.synctex.gz
+*_files/
+figure/
