@@ -1,191 +1,381 @@
 ---
-title: "PROJET ENSAE — EXAMEN DE FINANCE DE MARCHÉ"
-subtitle: "Professeur : M. Ousmane Diallo"
-author: "Sié Rachid Traoré"
-date: "`r format(Sys.Date(), '%d/%m/%Y')`"
+documentclass: article
+fontsize: 11pt
+geometry:
+  - paperwidth=210mm
+  - paperheight=297mm
+  - left=2.5cm
+  - right=2.5cm
+  - top=2.5cm
+  - bottom=2.5cm
 output:
-  html_document:
-    toc: true
-    toc_depth: 2
-    number_sections: false
-    theme: null
-    css: null
+  pdf_document:
+    toc: no
+    fig_caption: yes
+    number_sections: no
+    keep_tex: no
+header-includes: |
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage[french]{babel}
+  \usepackage{textcomp}
+  % Police Arial (équivalent Helvetica sous pdflatex) pour tout le document
+  \usepackage[scaled=0.95]{helvet}
+  \renewcommand{\familydefault}{\sfdefault}
+  \usepackage[]{microtype}
+  \usepackage{anyfontsize}
+  \usepackage{amsmath,amssymb}
+  \usepackage{setspace}
+  \usepackage{fancyhdr}
+  \setlength{\headheight}{14.5pt}
+  \usepackage{titlesec}
+  \usepackage{enumitem}
+  \usepackage{float}
+  \usepackage{calc}
+  \usepackage{etoolbox}
+  \usepackage{pifont}
+  \usepackage{array}
+  \usepackage{multirow}
+  \usepackage{longtable}
+  \usepackage{booktabs}
+  \usepackage{tabularx}
+  \usepackage[dvipsnames, svgnames, x11names]{xcolor}
+  \definecolor{deepblue}{RGB}{10,60,90}
+  \definecolor{MidnightBlue}{RGB}{25,25,112}
+  \definecolor{RoyalBlue}{RGB}{65,105,225}
+  \definecolor{darkblue}{HTML}{1F3864}
+  \definecolor{steelblue}{RGB}{70,130,180}
+  \definecolor{darkred}{RGB}{139,0,0}
+  \definecolor{ForestGreen}{RGB}{34,139,34}
+  \definecolor{orange}{RGB}{255,165,0}
+  \definecolor{gold}{RGB}{255,215,0}
+  \definecolor{gray}{RGB}{128,128,128}
+  \definecolor{lightblue}{rgb}{0.68,0.85,0.90}
+  \definecolor{marron}{RGB}{121,68,25}
+  \definecolor{blancsale}{RGB}{245,240,228}
+  \pagecolor{blancsale}
+  \usepackage{tikz}
+  \usetikzlibrary{shapes.geometric, arrows, calc}
+  \usepackage[most, many]{tcolorbox}
+  \usepackage{graphicx}
+  \usepackage{pdfpages}
+  \usepackage{shorttoc}
+  \usepackage{hyperref}
+  \IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+  \usepackage[Conny]{fncychap}
+  \usepackage[pages=all]{background}
+  \setcounter{secnumdepth}{4}
+  \renewcommand\thesection{\arabic{section}}
+  \renewcommand{\refname}{\textcolor{RoyalBlue}{Références bibliographiques}}
+  \usepackage{iftex}
+  % --- Styles des titres : numéro de section dans un cartouche, filet orange ---
+  \titleformat{\section}
+    {\large\bfseries}
+    {\tikz[baseline=(secnum.base)]{\node[fill=MidnightBlue, text=white,
+        rounded corners=2pt, inner xsep=7pt, inner ysep=4pt,
+        font=\large\bfseries] (secnum) {Exercice~\thesection};}}
+    {0.8em}
+    {\color{MidnightBlue}}
+    [{\color{orange}\titlerule[1.4pt]}]
+  \titleformat{\subsection}
+    {\normalsize\bfseries\color{MidnightBlue}}
+    {\textcolor{orange!80!black}{\thesubsection}}{0.6em}{}
+  \titleformat{\subsubsection}
+    {\normalsize\bfseries\color{darkblue}}
+    {\textcolor{orange!80!black}{\thesubsubsection}}{0.6em}{}
+  % --- Légendes des tableaux et figures ---
+  \usepackage[font=small, labelfont={bf,color=MidnightBlue}, labelsep=period]{caption}
+  % --- Confort de lecture : espacement des paragraphes, veuves et orphelines ---
+  \setlength{\parskip}{4pt plus 1pt}
+  \widowpenalty=10000
+  \clubpenalty=10000
+  % --- Listes à puces : points et étoiles (au lieu des tirets de babel-french) ---
+  \setlist[itemize,1]{label=\textbullet}
+  \setlist[itemize,2]{label=$\star$}
+  \titlespacing*{\section}{0pt}{1.5ex plus .5ex}{1ex}
+  \titlespacing*{\subsection}{0pt}{1.2ex plus .3ex}{0.8ex}
+  \titlespacing*{\subsubsection}{0pt}{1ex plus .2ex}{0.5ex}
+  % --- Encadré de réponse : même habillage que le résumé exécutif ---
+  \newtcolorbox{reponse}{enhanced, colback=blancsale!60!white, colframe=MidnightBlue,
+    boxrule=1pt, arc=2mm, left=4mm, right=4mm, top=2mm, bottom=2mm,
+    title={\bfseries Réponse}, colbacktitle=MidnightBlue,
+    coltitle=white, fonttitle=\small}
 ---
 
-<style>
-:root { --beige: #F1E8D8; --creme: #F7F3E7; --orange: #E87722;
-        --orange-fonce: #B35309; --gris: #595959; --encre: #3F3F3F; }
-@page { size: A4; }
-html { background: var(--creme); }
-body { font-family: Helvetica, Arial, sans-serif; color: #2b2b2b;
-       margin: 0; line-height: 1.55; font-size: 11pt; text-align: justify;
-       background: var(--creme); counter-reset: sec; }
-header#title-block-header { display: none; }
+```{=tex}
+\setlength{\headheight}{18pt}
+\setlength{\headsep}{20pt}
+\setlength{\footskip}{25pt}
 
-.lateral { position: fixed; left: -4mm; top: 40%; transform: rotate(-90deg);
-           transform-origin: left top; color: #cfc9bb; font-size: 7.5pt;
-           letter-spacing: 3px; font-variant: small-caps; white-space: nowrap; }
+\renewcommand{\headrulewidth}{1pt}
+\let\oldheadrule\headrule
+\renewcommand{\headrule}{\color{orange}\oldheadrule}
+\renewcommand{\footrulewidth}{1pt}
+\let\oldfootrule\footrule
+\renewcommand{\footrule}{\color{orange}\oldfootrule}
 
-h1 { counter-increment: sec; page-break-before: always;
-     background: none; color: var(--encre); font-size: 14pt;
-     border-bottom: 2.5px solid var(--orange); padding: 0 0 7px 0; }
-h1::before { content: "Exercice " counter(sec); background: var(--encre);
-             color: #fff; padding: 4px 14px; margin-right: 14px;
-             font-size: 12pt; }
-h2 { color: var(--encre); font-size: 12.5pt; }
-h3 { color: var(--encre); font-size: 11.5pt; margin-top: 20px;
-     border-left: 4px solid var(--orange); padding-left: 8px; }
+\pagestyle{fancy}
+\lhead{\scriptsize\textcolor{marron}{Finance de Marché}}
+\rhead{\scriptsize\textcolor{marron}{2025-2026}}
+\lfoot{\scriptsize\textcolor{marron}{Sié Rachid Traoré}}
+\cfoot{\textcolor{marron}{\thepage}}
+\rfoot{\scriptsize\textcolor{marron}{ISE3-ENSAE 2026}}
 
-table { border-collapse: collapse; margin: 14px auto; background: #fff;
-        page-break-inside: avoid; font-size: 10.5pt; }
-th { background: var(--orange); color: #fff; border: none; padding: 5px 14px; }
-td { border: none; border-bottom: 1px solid #e2dccc; padding: 5px 14px; }
-tr:nth-child(even) td { background: var(--creme); }
-table { border-bottom: 2px solid var(--encre); border-top: 2px solid var(--encre); }
+\newgeometry{margin=0pt}
+\begin{tikzpicture}[remember picture, overlay]
+    % Fond en dégradé : léger bleu en tête fondu vers le blanc cassé beige du document
+    \shade[top color=deepblue!6, middle color=blancsale!70!white, bottom color=blancsale]
+        (current page.south west) rectangle (current page.north east);
+    \draw [deepblue, line width=2pt]
+        ([shift={(10pt,-10pt)}]current page.north west)
+        rectangle ([shift={(-10pt,10pt)}]current page.south east);
+    \draw [orange!60!black, line width=0.5pt]
+        ([shift={(12.5pt,-12.5pt)}]current page.north west)
+        rectangle ([shift={(-12.5pt,12.5pt)}]current page.south east);
+    \draw [deepblue!60, line width=0.8pt]
+        ([shift={(15pt,-15pt)}]current page.north west)
+        rectangle ([shift={(-15pt,15pt)}]current page.south east);
+    \node[opacity=0.05] at (current page.center)
+        {\includegraphics[width=0.6\paperwidth]{ressource/image/ENSAE-Dakar-logo.png}};
+    \foreach \anchor/\xshift/\yshift in
+        {north west/25pt/-25pt, north east/-25pt/-25pt,
+         south west/25pt/25pt, south east/-25pt/25pt} {
+        \draw[deepblue!40, fill=deepblue!10,
+              rotate around={45:([shift={(\xshift,\yshift)}]current page.\anchor)}]
+            ([shift={(\xshift,\yshift)}]current page.\anchor) rectangle ++(10pt,10pt);
+    }
+    \draw[deepblue!80, line width=1.5pt]
+        ([shift={(120pt,50pt)}]current page.south west)
+        -- ([shift={(-120pt,50pt)}]current page.south east);
+    \node[draw=deepblue, fill=white, star, star points=5, inner sep=2pt, line width=1pt]
+        at ([yshift=50pt]current page.south) {};
+\end{tikzpicture}
 
-.reponse { background: #fff; border: 1.5px solid var(--gris); border-radius: 9px;
-           border-left: 7px solid var(--orange); padding: 10px 16px;
-           margin: 14px 0; font-weight: 600; page-break-inside: avoid; }
-img { display: block; margin: 12px auto; max-width: 100%; page-break-inside: avoid; }
+\thispagestyle{empty}
 
-/* ---------- page de garde ---------- */
-.garde { height: 23.1cm; page-break-after: always; text-align: center;
-         background: #fdfcf9; border: 2px solid var(--gris); outline: 1px solid var(--orange);
-         outline-offset: -6px; padding: 1.1cm 1.2cm; box-sizing: border-box;
-         display: flex; flex-direction: column; justify-content: space-between; }
-.garde .pays { font-variant: small-caps; font-size: 13pt; letter-spacing: 1px; }
-.garde .devise { font-size: 10pt; color: var(--gris); }
-.garde .inst { font-weight: bold; font-size: 11.5pt; margin-top: 0.45cm; }
-.garde .titre { background: var(--encre); color: #fff; font-weight: bold;
-                font-size: 17pt; padding: 12px 26px; display: inline-block;
-                margin: 0.25cm auto 0.12cm; }
-.garde .soustitre { font-style: italic; font-size: 12pt; }
-.garde .signatures { display: flex; justify-content: space-between;
-                     text-align: left; font-size: 10.5pt; margin-top: 0.4cm; }
-.garde .signatures .droite { text-align: right; align-self: flex-end; }
-.garde .role { font-style: italic; color: var(--orange-fonce); }
-.garde .nom { font-weight: bold; }
-.garde .statut { font-variant: small-caps; font-size: 9pt; color: var(--gris); }
-.garde .datefin { font-weight: bold; font-size: 12pt;
-                  border-top: 1.5px solid var(--gris); display: inline-block;
-                  padding-top: 8px; }
+\begin{center}
+    \vspace*{0.8cm}
+    \textsc{\Large République du Sénégal}\\[0.15cm]
+    \small{Un Peuple - Un But - Une Foi}\\[0.4cm]
+    \includegraphics[width=90pt]{ressource/image/Republique du Senegal.png}\\[0.5cm]
+    \textbf{\large Agence Nationale de la Statistique et de la Démographie (ANSD)}\\[0.2cm]
+    \includegraphics[width=85pt]{ressource/image/ANSD.png}\\[0.3cm]
+    \textbf{\large École Nationale de la Statistique et de l'Analyse Économique Pierre Ndiaye (ENSAE)}\\[0.2cm]
+    \includegraphics[width=85pt]{ressource/image/ENSAE-Dakar-logo.png}\\[1cm]
 
-/* ---------- sommaire ---------- */
-.sommaire { page-break-after: always; background: #fff; border: 1.5px solid var(--gris);
-            border-radius: 10px; padding: 14px 26px 20px; margin-top: 8px; }
-.sommaire h2 { color: var(--encre); border-bottom: 2px solid var(--orange);
-               padding-bottom: 6px; margin: 4px 0 12px; }
-.sommaire table.toc { border: none; margin: 0; width: 100%; background: none; font-size: 11.5pt; }
-.sommaire table.toc td { border: none; padding: 6px 2px; background: none; font-weight: bold;
-                         color: var(--encre); }
-.sommaire table.toc td.num { color: var(--orange-fonce); width: 1.4em; }
-.sommaire table.toc td.pg { text-align: right; width: 2em; }
-</style>
+    \begin{tikzpicture}
+        \node[fill=MidnightBlue, text=white, inner sep=14pt, rounded corners=3pt,
+              align=center, font=\LARGE\bfseries] (titre) {
+            Projet de Finance de Marché
+        };
+        \draw[MidnightBlue, line width=2pt]
+            ([yshift=-5pt]titre.south west) -- ([yshift=-5pt]titre.south east);
+    \end{tikzpicture}
 
-<div class="lateral">ENSAE Pierre Ndiaye — Ingénieur Statisticien Économiste — Promo 2026</div>
+    \vspace{0.6cm}
+    {\itshape\Large «\,Résolution de l'examen de finance de marché, exercices 1 à 5\,»}\\[2cm]
 
-<div class="garde">
-<div>
-<div class="pays">République du Sénégal</div>
-<div class="devise">Un Peuple - Un But - Une Foi</div>
-<div class="inst">Agence Nationale de la Statistique et de la Démographie (ANSD)</div>
-<div class="inst">École Nationale de la Statistique et de l'Analyse Économique Pierre Ndiaye (ENSAE)</div>
-</div>
-<div>
-<div class="titre">Projet de Finance de Marché</div><br/>
-<div class="soustitre">« Résolution de l'examen de finance de marché — Exercices 1 à 5 »</div>
-</div>
-<div>
-<div class="signatures">
-<div>
-<div class="role">Rédigé par :</div>
-<div class="nom">Sié Rachid Traoré</div>
-<div class="statut">Élève Ingénieur Statisticien Économiste<br/>Option Finance &amp; Actuariat</div>
-</div>
-<div class="droite">
-<div class="role">Sous la supervision de :</div>
-<div class="nom">M. Ousmane Diallo</div>
-<div class="statut">Enseignant</div>
-</div>
-</div>
-</div>
-<div><span class="datefin">Juillet 2026</span></div>
-</div>
+    \vspace{1cm}
+    \begin{minipage}{0.5\textwidth}
+        \begin{flushleft}\large
+            \textcolor{MidnightBlue}{\textit{Rédigé par :}}\\[0.2cm]
+            \textbf{Sié Rachid Traoré}\\[0.15cm]
+            \textsc{\small Élève Ingénieur Statisticien Économiste\\Option Finance \& Actuariat}
+        \end{flushleft}
+    \end{minipage}
+    \begin{minipage}{0.42\textwidth}
+        \begin{flushright}\large
+            \textcolor{MidnightBlue}{\textit{Sous la supervision de :}}\\[0.2cm]
+            \textbf{M. Ousmane Diallo}\\
+            \textsc{\small Enseignant}
+        \end{flushright}
+    \end{minipage}
+    \vspace{3cm}
 
-<div class="sommaire">
-<h2>Sommaire</h2>
-<table class="toc">
-<tr><td class="num">1</td><td>Exercice 1 — PER, Gordon-Shapiro, ratio de Sharpe, MEDAF, bêta</td><td class="pg">3</td></tr>
-<tr><td class="num">2</td><td>Exercice 2 — Portefeuille actif sans risque / actif risqué</td><td class="pg">5</td></tr>
-<tr><td class="num">3</td><td>Exercice 3 — Portefeuille de deux actifs risqués</td><td class="pg">7</td></tr>
-<tr><td class="num">4</td><td>Exercice 4 — Évaluation d'une obligation</td><td class="pg">9</td></tr>
-<tr><td class="num">5</td><td>Exercice 5 — Modèle de Cox-Ross-Rubinstein à 3 périodes</td><td class="pg">10</td></tr>
-</table>
-</div>
+    {\Large\textbf{Juillet 2026}}
+\end{center}
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE,
-                      results = "hide", fig.width = 7.5, fig.height = 5,
-                      dev = "png", dpi = 110, fig.align = "center")
-# Palette : gris, orange, blanc cassé / beige
-orange <- "#C55A11"; gris <- "#595959"; fond <- "#FAF7F0"
-fr <- function(x, d = 2) formatC(x, digits = d, format = "f", big.mark = " ", decimal.mark = ",")
-pct <- function(x, d = 2) paste0(fr(100*x, d), " %")
+\backgroundsetup{
+  scale=1, color=black, opacity=1, angle=0,
+  contents={%
+    \begin{tikzpicture}[remember picture, overlay]
+      \foreach \anchor/\rot in
+          {north west/0, north east/-90, south east/-180, south west/90} {
+        \begin{scope}[shift={([shift={(15pt,-15pt)}]current page.\anchor)}, rotate=\rot]
+          \draw[deepblue!60, line width=1.2pt] (0,-25pt) -- (0,0) -- (25pt,0);
+          \draw[orange!60!black, line width=0.4pt] (3pt,-22pt) -- (3pt,3pt) -- (22pt,3pt);
+        \end{scope}
+      }
+      \draw[deepblue!20, line width=0.5pt]
+          ([xshift=35pt, yshift=-60pt]current page.north west)
+          -- ([xshift=35pt, yshift=60pt]current page.south west);
+      \foreach \y in {0,20,...,600} {
+          \draw[deepblue!20]
+              ([xshift=35pt, yshift=-\y pt-100pt]current page.north west) -- ++(-3pt,0);
+      }
+      \draw[deepblue!80, line width=1.5pt]
+          ([xshift=-120pt, yshift=60pt]current page.south)
+          -- ([xshift=120pt, yshift=60pt]current page.south);
+      \node[draw=deepblue, fill=white, star, star points=5, inner sep=2pt, line width=1pt]
+          at ([yshift=60pt]current page.south) {};
+      \node[deepblue!15, rotate=90, anchor=south] at ([xshift=25pt]current page.west)
+          {\textsc{\small ENSAE Pierre Ndiaye --- Ingénieur Statisticien Économiste --- Promo 2026}};
+    \end{tikzpicture}%
+  }
+}
+
+\restoregeometry
+\newpage
+% --- Sommaire court (shorttoc) dans un encadré TikZ/tcolorbox ---
+\begin{tcolorbox}[enhanced, breakable,
+    colback=deepblue!2, colframe=MidnightBlue, boxrule=1pt, arc=2mm,
+    left=5mm, right=5mm, top=1mm, bottom=4mm,
+    drop fuzzy shadow=deepblue!40]
+\shorttoc{\textcolor{MidnightBlue}{Sommaire}}{1}
+\end{tcolorbox}
+\renewcommand{\listtablename}{\textcolor{MidnightBlue}{Liste des tableaux}}
+{\color{black}\listoftables}
+\onehalfspacing
 ```
 
-# PER, Gordon-Shapiro, ratio de Sharpe, MEDAF et bêta
+```{r setup, include=FALSE, comment=""}
+knitr::opts_chunk$set(
+  echo    = FALSE,   # le code R n'apparaît pas dans le rapport, seuls les résultats
+  warning = FALSE,
+  message = FALSE,
+  comment = "",
+  cache   = FALSE,
+  fig.pos = "H",
+  dev     = "cairo_pdf",
+  dev.args = list(bg = "transparent"),
+  fig.align = "center",
+  size    = "footnotesize"  # options : tiny, scriptsize, footnotesize, small, normalsize
+)
 
-### 1. Price Earnings Ratio (PER)
+# Hook qui applique la taille LaTeX à chaque chunk
+knitr::knit_hooks$set(size = function(before, options, envir) {
+  if (before) paste0("\n\n\\", options$size, "\n\n") else "\n\n\\normalsize\n\n"
+})
+
+options(OutDec = ",", scipen = 999)
+```
+
+```{r packages}
+if (!require(knitr))      install.packages("knitr")
+if (!require(ggplot2))    install.packages("ggplot2")
+if (!require(kableExtra)) install.packages("kableExtra")
+library(knitr); library(ggplot2); library(kableExtra)
+
+# --- Habillage commun des tableaux : en-tête orange, lignes rayées de gris ---
+kable <- function(...) {
+  knitr::kable(...) |>
+    kableExtra::kable_styling(latex_options = c("striped", "HOLD_position"),
+                              stripe_color  = "gray!12", font_size = 9) |>
+    kableExtra::row_spec(0, background = "#ED7D31", color = "white", bold = TRUE)
+}
+
+# --- Fonctions utilitaires de mise en forme ---
+fmt  <- function(x, d = 2) formatC(x, format = "f", digits = d, big.mark = " ")
+pct  <- function(x, d = 2) paste0(formatC(x, format = "f", digits = d), " %")
+pctx <- function(x, d = 2) paste0(formatC(x, format = "f", digits = d), " \\%")
+
+# --- Couleurs des graphiques : orange dominant + gris, couleurs unies ---
+col_orange <- "#ED7D31"; col_gris <- "#7F7F7F"
+col_bleu   <- "#1F3864"; col_rouge <- "#8B0000"; col_vert <- "#228B22"
+
+# --- Thème graphique commun du rapport (sans grille de fond) ---
+theme_alm <- theme_minimal(base_size = 10) +
+  theme(panel.grid = element_blank(),
+        plot.background  = element_rect(fill = "transparent", colour = NA),
+        panel.background = element_rect(fill = "transparent", colour = NA),
+        legend.background = element_rect(fill = "transparent", colour = NA),
+        legend.key = element_rect(fill = "transparent", colour = NA),
+        axis.line  = element_line(colour = "gray45", linewidth = 0.35),
+        axis.ticks = element_line(colour = "gray45", linewidth = 0.3),
+        plot.subtitle = element_text(colour = "gray35", size = 8.5),
+        strip.text = element_text(face = "bold", colour = "#191970"),
+        axis.title = element_text(size = 9),
+        legend.position = "bottom")
+```
+
+\newpage
+
+\begin{tcolorbox}[enhanced, colback=blancsale!60!white, colframe=MidnightBlue,
+    boxrule=1pt, arc=2mm, left=5mm, right=5mm, top=3mm, bottom=3mm,
+    title={\bfseries Résumé exécutif}, colbacktitle=MidnightBlue,
+    coltitle=white, fonttitle=\normalsize]
+\begin{itemize}[itemsep=2pt]
+  \item Société MIM : le taux de rentabilité exigé par les investisseurs, obtenu par
+        Gordon-Shapiro, est $k = 2/20 + 6\,\% = 16\,\%$.
+  \item Le bêta estimé sur les 16 cotations fournies ressort à $\beta \approx 1{,}61$ :
+        le titre amplifie les variations de l'indice ; avec un taux sans risque de
+        0,2\,\%, le MEDAF donne une rentabilité exigée d'environ 0,43\,\% par période.
+  \item Allocation actif sans risque / actif risqué : la rentabilité croît linéairement
+        avec le risque (pente = ratio de Sharpe $\approx 0{,}39$) ; le portefeuille J
+        (9\,\%) s'obtient avec 37\,500\,€ en actif risqué et supporte un risque de 7,61\,\%.
+  \item Deux actifs risqués non corrélés : la diversification abaisse le risque jusqu'à
+        12\,\% (portefeuille 36\,\%/64\,\%), en dessous du risque de chacun des deux actifs ;
+        la branche inférieure de la courbe est inefficiente.
+  \item Obligation 15 ans, coupon 10\,\% : prix de 1\,124,56\,€ à 8,5\,\% ; TRE de 9\,\%
+        pour un prix de 1\,080,61\,€ ; une hausse de 1 point du taux fait chuter le prix
+        de 7,60\,\% (risque de taux).
+  \item Cox-Ross-Rubinstein à 3 périodes : $u = 1{,}0594$, $d = 0{,}9439$, $p = 0{,}4784$ ;
+        le call standard européen vaut $C_0 \approx 5{,}07$\,€.
+\end{itemize}
+\end{tcolorbox}
+
+\section{\textcolor{MidnightBlue}{PER, Gordon-Shapiro, Sharpe, MEDAF et bêta}}
+
+\subsection{\textcolor{MidnightBlue}{Le Price Earnings Ratio (PER)}}
 
 $$PER = \frac{P_0}{BPA} = \frac{\text{Capitalisation boursière}}{\text{Bénéfice total}}$$
 
-Un PER de 10 signifie que le marché valorise l'entreprise à 10 fois son bénéfice ; plus le PER
-est élevé, plus l'action est chère.
+Un PER de 10 signifie que le marché valorise l'entreprise à 10 fois son bénéfice ; plus le
+PER est élevé, plus l'action est chère.
 
-### 2. Modèle de Gordon-Shapiro
+\subsection{\textcolor{MidnightBlue}{Le modèle de Gordon-Shapiro}}
 
-$$P_0 = \frac{D_1}{k - g} \qquad \Longleftrightarrow \qquad k = \frac{D_1}{P_0} + g$$
+$$P_0 = \frac{D_1}{k - g} \qquad\Longleftrightarrow\qquad k = \frac{D_1}{P_0} + g$$
 
 avec $P_0$ le cours actuel, $D_1$ le dividende attendu dans un an, $k$ le taux de rentabilité
 exigé et $g$ le taux de croissance perpétuel des dividendes ($g < k$).
 
-### 3. Ratio de Sharpe
+\subsection{\textcolor{MidnightBlue}{Le ratio de Sharpe}}
 
 $$Sharpe = \frac{E(R_p) - R_f}{\sigma_p}$$
 
-excès de rentabilité espérée par unité de risque total.
+soit l'excès de rentabilité espérée par unité de risque total.
 
-### 4. Formule du MEDAF
+\subsection{\textcolor{MidnightBlue}{La formule du MEDAF}}
 
-$$E(R_i) = R_f + \beta_i \left[ E(R_M) - R_f \right]$$
+$$E(R_i) = R_f + \beta_i\,[E(R_M) - R_f]$$
 
-* $E(R_i)$ : rentabilité exigée du titre $i$ ;
-* $R_f$ : taux sans risque ;
-* $E(R_M)$ : rentabilité espérée du portefeuille de marché ;
-* $E(R_M) - R_f$ : prime de risque du marché ;
-* $\beta_i$ : sensibilité du titre $i$ aux variations du marché (risque systématique).
+\begin{itemize}
+  \item $E(R_i)$ : rentabilité exigée du titre $i$ ;
+  \item $R_f$ : taux sans risque ;
+  \item $E(R_M)$ : rentabilité espérée du portefeuille de marché ;
+  \item $E(R_M) - R_f$ : prime de risque du marché ;
+  \item $\beta_i$ : sensibilité du titre $i$ aux variations du marché (risque systématique).
+\end{itemize}
 
-### 5. Société MIM — taux de rentabilité exigé
-
-```{r mim}
-D1 <- 2; P0 <- 20; g <- 0.06
-k <- D1/P0 + g
-```
+\subsection{\textcolor{MidnightBlue}{Société MIM : taux de rentabilité exigé}}
 
 Par Gordon-Shapiro : $k = \dfrac{D_1}{P_0} + g = \dfrac{2}{20} + 0{,}06$.
 
-<div class="reponse">k = 10 % + 6 % = **16 %**.</div>
+\begin{reponse}
+$k = 10\,\% + 6\,\% = \mathbf{16\,\%}$ par an.
+\end{reponse}
 
-### 6. Bêta d'un titre i
+\subsection{\textcolor{MidnightBlue}{Le bêta d'un titre i}}
 
-$$\beta_i = \frac{Cov(R_i , R_M)}{Var(R_M)}$$
+$$\beta_i = \frac{Cov(R_i, R_M)}{Var(R_M)}$$
 
 $\beta > 1$ : titre plus volatil que le marché ; $\beta < 1$ : titre défensif ;
 $\beta = 1$ : le titre varie comme le marché.
 
-### 7. Bêta de l'action
+\subsection{\textcolor{MidnightBlue}{Calcul du bêta de l'action}}
 
-```{r beta}
+```{r beta-data, results='asis'}
 cours  <- c(39.56,39.97,40.76,38.54,41.65,42.78,46.23,45.82,
             48.93,50.45,50.87,53.76,55.63,56.39,51.03,53.76)
 indice <- c(5046,5035,5103,5011,5126,5246,5388,5346,
@@ -193,205 +383,318 @@ indice <- c(5046,5035,5103,5011,5126,5246,5388,5346,
 Ri <- diff(cours)/head(cours, -1)
 RM <- diff(indice)/head(indice, -1)
 beta <- cov(Ri, RM)/var(RM)
-Rf <- 0.002
-ERi <- Rf + beta*(mean(RM) - Rf)
+Rf   <- 0.002
+ERi  <- Rf + beta*(mean(RM) - Rf)
+
+tab_beta <- data.frame(
+  P = 1:16, Cours = fmt(cours), Indice = fmt(indice, 0),
+  Ri = c("—", pct(100*Ri, 3)), RM = c("—", pct(100*RM, 3)))
+kable(tab_beta, booktabs = TRUE, linesep = "", row.names = FALSE,
+      col.names = c("Période", "Cours", "Indice",
+                    "Rentabilité du titre Ri", "Rentabilité du marché RM"),
+      align = "c",
+      caption = "Cours, indice et rentabilités périodiques $R_t = P_t/P_{t-1}-1$")
 ```
 
-On calcule les rentabilités périodiques du titre et de l'indice, $R_t = P_t/P_{t-1} - 1$
-(15 observations), puis :
+Sur les 15 rentabilités périodiques : $Cov(R_i, R_M) = `r fmt(cov(Ri, RM), 6)`$ et
+$Var(R_M) = `r fmt(var(RM), 6)`$.
 
-$$\beta = \frac{Cov(R_i,R_M)}{Var(R_M)} =
-\frac{`r fr(cov(Ri,RM), 6)`}{`r fr(var(RM), 6)`}$$
+\begin{reponse}
+$\beta = \dfrac{Cov(R_i,R_M)}{Var(R_M)} \approx \mathbf{`r fmt(beta)`}$ : le titre est
+offensif, il amplifie les variations du marché d'environ 61\,\%.
+\end{reponse}
 
-<div class="reponse">β ≈ **`r fr(beta, 2)`**.</div>
+Avec un taux sans risque de 0,2\,\% et $E(R_M)$ estimée par la moyenne des rentabilités de
+l'indice sur l'échantillon (`r pct(100*mean(RM))` par période), le MEDAF donne :
 
-**Rentabilité avec un taux sans risque de 0,2 %** — en appliquant le MEDAF avec
-$E(R_M)$ = moyenne des rentabilités de l'indice sur l'échantillon (`r pct(mean(RM))` par
-période) :
+\begin{reponse}
+$E(R_i) = 0{,}2\,\% + `r fmt(beta)` \times (`r pctx(100*mean(RM))` - 0{,}2\,\%)
+\approx \mathbf{`r pctx(100*ERi)`}$ par période.
+\end{reponse}
 
-$$E(R_i) = 0{,}2\,\% + `r fr(beta,2)` \times (`r pct(mean(RM))` - 0{,}2\,\%)$$
+\newpage
 
-<div class="reponse">E(R<sub>i</sub>) ≈ **`r pct(ERi)` par période**.</div>
+\section{\textcolor{MidnightBlue}{Portefeuille actif sans risque / actif risqué}}
 
-# Portefeuille actif sans risque / actif risqué
-
-Capital de 100 000 € ; $r_f = 0{,}06$ ; $E(r_A) = 0{,}14$ ; $\sigma_A = 0{,}203$.
-Pour une fraction $X$ investie dans l'actif risqué :
+Vous disposez de 100\,000\,€ ; l'actif sans risque rapporte $r_f = 6\,\%$ ; l'actif risqué a
+une espérance de rentabilité $E(r_A) = 14\,\%$ et un écart type $\sigma_A = 0{,}203$. Pour une
+fraction $X$ investie dans l'actif risqué :
 
 $$E(r_p) = r_f + X\,[E(r_A) - r_f] \qquad ; \qquad \sigma_p = X\,\sigma_A$$
 
-### 1/ Rentabilité espérée et écart type de chaque portefeuille
+\subsection{\textcolor{MidnightBlue}{Rentabilité espérée et écart type de chaque portefeuille}}
 
-La proportion investie dans l'actif risqué dépend du portefeuille choisi (F, G, H, I ou S) :
+La proportion à investir dans l'actif risqué correspond au portefeuille choisi (F, G, H, I, S) :
 
-```{r ex2, results='asis'}
+```{r ex2-table, results='asis'}
 rf <- 0.06; muA <- 0.14; sigA <- 0.203; W <- 100000
 X  <- c(F = 0, G = 0.25, H = 0.50, I = 0.75, S = 1)
 tab2 <- data.frame(
-  Portefeuille         = names(X),
-  `X (actif risqué)`   = pct(X, 0),
-  `1 − X (sans risque)`= pct(1 - X, 0),
-  `Montant risqué (€)` = fr(W*X, 0),
-  `E(rp)`              = pct(rf + X*(muA - rf)),
-  `Écart type σp`      = fr(X*sigA, 4), check.names = FALSE)
-print(knitr::kable(tab2, row.names = FALSE, align = "c"))
+  Portefeuille = names(X),
+  X            = pct(100*X, 0),
+  unmoinsX     = pct(100*(1 - X), 0),
+  Montant      = fmt(W*X, 0),
+  E            = pct(100*(rf + X*(muA - rf))),
+  S            = fmt(X*sigA, 4))
+kable(tab2, booktabs = TRUE, linesep = "", row.names = FALSE, align = "c",
+      col.names = c("Portefeuille", "X (actif risqué)", "1 - X (sans risque)",
+                    "Montant risqué (€)", "E(rp)", "Écart type"),
+      caption = "Rentabilité espérée et écart type des portefeuilles F, G, H, I et S")
 ```
 
-### 2/ Courbe de la rentabilité en fonction du risque
+Le ratio de Sharpe de l'actif risqué, pente de la droite d'allocation, vaut
+$(0{,}14 - 0{,}06)/0{,}203 \approx `r fmt((muA-rf)/sigA, 4)`$.
 
-```{r ex2plot, results='markup'}
-sig <- X*sigA ; mu <- rf + X*(muA - rf)
-par(bg = "white", mar = c(4.5, 4.5, 3, 1))
-plot(sig, mu, type = "o", lwd = 2, pch = 19, cex = 1.3,
-     col = orange, xlab = expression(sigma[p]~"(risque)"),
-     ylab = expression(E(r[p])~"(rentabilité espérée)"),
-     main = "Rentabilité en fonction du risque",
-     panel.first = rect(par("usr")[1], par("usr")[3], par("usr")[2],
-                        par("usr")[4], col = fond, border = NA))
-text(sig, mu, names(X), pos = 3, col = orange, font = 2)
+\subsection{\textcolor{MidnightBlue}{Courbe de la rentabilité en fonction du risque}}
+
+```{r ex2-graph, fig.height=3.1, fig.width=6.4, fig.cap="Rentabilité espérée en fonction du risque : portefeuilles F à S et portefeuille J"}
+d2 <- data.frame(sig = X*sigA, mu = rf + X*(muA - rf), nom = names(X))
 xJ <- (0.09 - rf)/(muA - rf)
-points(xJ*sigA, 0.09, pch = 17, cex = 1.6, col = gris)
-text(xJ*sigA, 0.09, "J", pos = 1, col = gris, font = 2)
+dJ <- data.frame(sig = xJ*sigA, mu = 0.09, nom = "J")
+
+ggplot(d2, aes(sig, mu)) +
+  geom_line(colour = col_orange, linewidth = 1) +
+  geom_point(colour = col_orange, size = 2.6) +
+  geom_text(aes(label = nom), vjust = -0.9, size = 3.2,
+            colour = col_bleu, fontface = "bold") +
+  geom_point(data = dJ, colour = col_gris, size = 3, shape = 17) +
+  geom_text(data = dJ, aes(label = nom), vjust = 1.9, size = 3.2,
+            colour = col_gris, fontface = "bold") +
+  scale_x_continuous(labels = function(x) fmt(x, 2)) +
+  scale_y_continuous(labels = function(x) pct(100*x, 0),
+                     expand = expansion(mult = 0.12)) +
+  labs(x = "Risque (écart type du portefeuille)",
+       y = "Rentabilité espérée",
+       subtitle = "La relation est linéaire : chaque point de rentabilité se paie en risque, au taux du ratio de Sharpe") +
+  theme_alm
 ```
 
-### 3/ Portefeuille J de rentabilité 0,09
+\subsection{\textcolor{MidnightBlue}{Le portefeuille J de rentabilité 0,09}}
 
-$$X_J = \frac{0{,}09-0{,}06}{0{,}14-0{,}06} = 37{,}5\,\% \qquad ; \qquad
-\sigma_J = X_J\,\sigma_A = 0{,}375 \times 0{,}203$$
+$$0{,}09 = 0{,}06 + X_J\,(0{,}14 - 0{,}06)
+\qquad\Longrightarrow\qquad
+X_J = \frac{0{,}09 - 0{,}06}{0{,}08} = 37{,}5\,\%$$
 
-<div class="reponse">**37 500 €** seront investis en actif risqué (62 500 € en actif sans
-risque). Risque associé : σ<sub>J</sub> ≈ **0,0761 (7,61 %)**.</div>
+\begin{reponse}
+$\mathbf{37\,500}$\,€ seront investis en actif risqué et 62\,500\,€ en actif sans risque.
+Le risque associé est $\sigma_J = 0{,}375 \times 0{,}203 \approx \mathbf{0{,}0761}$
+(7,61\,\%).
+\end{reponse}
 
-# Portefeuille de deux actifs risqués
+\newpage
 
-$\mu_1 = 0{,}14$, $\sigma_1 = 0{,}20$ ; $\mu_2 = 0{,}08$, $\sigma_2 = 0{,}15$ ; $\rho_{12} = 0$.
+\section{\textcolor{MidnightBlue}{Portefeuille de deux actifs risqués}}
 
-$$E(r_p) = X_1\mu_1 + X_2\mu_2 \qquad ; \qquad
+Les deux actifs risqués ($\mu_1 = 0{,}14$, $\sigma_1 = 0{,}20$ ; $\mu_2 = 0{,}08$,
+$\sigma_2 = 0{,}15$) ne sont pas corrélés ($\rho_{12} = 0$), d'où :
+
+$$E(r_p) = X_1\,\mu_1 + X_2\,\mu_2 \qquad ; \qquad
 \sigma_p = \sqrt{X_1^2\sigma_1^2 + X_2^2\sigma_2^2}$$
 
-### 1/ Rentabilité espérée et écart type de chaque portefeuille
+\subsection{\textcolor{MidnightBlue}{Rentabilité espérée et écart type de chaque portefeuille}}
 
-```{r ex3, results='asis'}
+```{r ex3-table, results='asis'}
 mu1 <- 0.14; mu2 <- 0.08; s1 <- 0.20; s2 <- 0.15
 X1 <- c(R = 0, C = 0.25, `Risque minimum` = 0.36, D = 0.50, S = 1)
 tab3 <- data.frame(
-  Portefeuille   = names(X1),
-  `X1 (actif 1)` = pct(X1, 0),
-  `X2 (actif 2)` = pct(1 - X1, 0),
-  `E(rp)`        = pct(X1*mu1 + (1 - X1)*mu2),
-  `Écart type σp`= fr(sqrt(X1^2*s1^2 + (1 - X1)^2*s2^2), 4), check.names = FALSE)
-print(knitr::kable(tab3, row.names = FALSE, align = "c"))
+  Portefeuille = names(X1),
+  X1 = pct(100*X1, 0), X2 = pct(100*(1 - X1), 0),
+  E  = pct(100*(X1*mu1 + (1 - X1)*mu2)),
+  S  = fmt(sqrt(X1^2*s1^2 + (1 - X1)^2*s2^2), 4))
+kable(tab3, booktabs = TRUE, linesep = "", row.names = FALSE, align = "c",
+      col.names = c("Portefeuille", "X1 (actif 1)", "X2 (actif 2)",
+                    "E(rp)", "Écart type"),
+      caption = "Rentabilité espérée et écart type des portefeuilles R, C, Risque minimum, D et S")
 ```
 
-(On vérifie : $X_1^\ast = \sigma_2^2/(\sigma_1^2 + \sigma_2^2) = 0{,}0225/0{,}0625 = 36\,\%$.)
+On vérifie la composition de variance minimale :
+$X_1^{*} = \dfrac{\sigma_2^2}{\sigma_1^2 + \sigma_2^2} = \dfrac{0{,}0225}{0{,}0625} = 36\,\%$.
 
-### 2/ Courbe de la rentabilité en fonction du risque — interprétation
+\subsection{\textcolor{MidnightBlue}{Courbe de la rentabilité en fonction du risque et interprétation}}
 
-```{r ex3plot, results='markup'}
-gr <- seq(0, 1, by = 0.01)
-Ef <- gr*mu1 + (1 - gr)*mu2
-Sf <- sqrt(gr^2*s1^2 + (1 - gr)^2*s2^2)
-Ep <- X1*mu1 + (1 - X1)*mu2
-Sp <- sqrt(X1^2*s1^2 + (1 - X1)^2*s2^2)
-par(bg = "white", mar = c(4.5, 4.5, 3, 1))
-plot(Sf, Ef, type = "l", lwd = 2.5, col = orange,
-     xlab = expression(sigma[p]~"(risque)"),
-     ylab = expression(E(r[p])~"(rentabilité espérée)"),
-     main = "Rentabilité en fonction du risque — 2 actifs risqués",
-     panel.first = rect(par("usr")[1], par("usr")[3], par("usr")[2],
-                        par("usr")[4], col = fond, border = NA))
-points(Sp, Ep, pch = 18, cex = 1.8, col = gris)
-text(Sp, Ep, names(X1), pos = 4, col = gris, font = 2)
+```{r ex3-graph, fig.height=3.2, fig.width=6.4, fig.cap="Frontière rentabilité-risque de deux actifs risqués non corrélés"}
+g  <- seq(0, 1, by = 0.01)
+df <- data.frame(sig = sqrt(g^2*s1^2 + (1 - g)^2*s2^2),
+                 mu  = g*mu1 + (1 - g)*mu2)
+dp <- data.frame(sig = sqrt(X1^2*s1^2 + (1 - X1)^2*s2^2),
+                 mu  = X1*mu1 + (1 - X1)*mu2, nom = names(X1))
+
+ggplot(df, aes(sig, mu)) +
+  geom_path(colour = col_orange, linewidth = 1.1) +
+  geom_point(data = dp, colour = col_gris, size = 2.8, shape = 18) +
+  geom_text(data = dp, aes(label = nom), hjust = -0.15, vjust = 0.4, size = 3.1,
+            colour = col_bleu, fontface = "bold") +
+  scale_x_continuous(labels = function(x) fmt(x, 2),
+                     expand = expansion(mult = c(0.02, 0.14))) +
+  scale_y_continuous(labels = function(x) pct(100*x, 0)) +
+  labs(x = "Risque (écart type du portefeuille)",
+       y = "Rentabilité espérée",
+       subtitle = "L'hyperbole illustre l'effet de diversification : le risque minimal (12 %) est inférieur à celui des deux actifs") +
+  theme_alm
 ```
 
-<div class="reponse">**Interprétation** : avec ρ = 0, la diversification réduit le risque. Le
-portefeuille « Risque minimum » (36 %/64 %) a un écart type de **12 %**, inférieur au risque de
-chacun des deux actifs (20 % et 15 %), pour une rentabilité de 10,16 %. Le portefeuille R est
-dominé (risque 15 % pour 8 % de rentabilité) : la branche inférieure de la courbe est
-inefficiente, la frontière efficiente va du portefeuille de variance minimale à S.</div>
+\begin{reponse}
+Grâce à la diversification ($\rho = 0$), le portefeuille \og Risque minimum \fg{}
+(36\,\%/64\,\%) a un écart type de \textbf{12\,\%}, inférieur au risque de chacun des deux
+actifs pris isolément (20\,\% et 15\,\%), pour une rentabilité de 10,16\,\%. Le portefeuille R
+est dominé (15\,\% de risque pour 8\,\% de rentabilité seulement) : toute la branche
+inférieure de la courbe est inefficiente ; la frontière efficiente va du portefeuille de
+variance minimale au portefeuille S.
+\end{reponse}
 
-# Évaluation d'une obligation
+\newpage
 
-Obligation : $VN = 1\,000$ €, $N = 15$ ans, coupon annuel $C = 100$ €.
+\section{\textcolor{MidnightBlue}{Évaluation d'une obligation}}
+
+Obligation de valeur nominale $VN = 1\,000$\,€, d'échéance $N = 15$ ans et de taux de coupon
+annuel 10\,\% (coupon $C = 100$\,€). Son prix est la valeur actualisée de ses flux :
 
 $$P = \frac{C}{r}\left[1 - \frac{1}{(1+r)^N}\right] + \frac{VN}{(1+r)^N}$$
 
-```{r ex4}
+```{r ex4-calc}
 prix <- function(r, C = 100, VN = 1000, N = 15)
   C/r*(1 - (1 + r)^-N) + VN*(1 + r)^-N
 P85 <- prix(0.085); P95 <- prix(0.095)
 TRE <- uniroot(function(r) prix(r) - 1080.61, c(0.01, 0.20), tol = 1e-10)$root
 ```
 
-### 1- Prix pour un taux de rendement à échéance de 8,5 %
+\subsection{\textcolor{MidnightBlue}{Prix pour un taux de rendement à échéance de 8,5 \%}}
 
-$$P = \frac{100}{0{,}085}\left[1 - (1{,}085)^{-15}\right] + \frac{1\,000}{(1{,}085)^{15}}$$
+\begin{reponse}
+$P = \dfrac{100}{0{,}085}\left[1 - (1{,}085)^{-15}\right] +
+\dfrac{1\,000}{(1{,}085)^{15}} = \mathbf{`r fmt(P85)`}$\,\textbf{€}. L'obligation cote au-dessus du
+pair car son coupon (10\,\%) excède le taux exigé (8,5\,\%).
+\end{reponse}
 
-<div class="reponse">P = **`r fr(P85)` €**.</div>
+\subsection{\textcolor{MidnightBlue}{Taux de rendement pour un prix de marché de 1 080,61 €}}
 
-### 2- Taux de rendement si le prix de marché est 1 080,61 €
+Le TRE est le taux qui annule la valeur actuelle nette, c'est-à-dire tel que
+$P(TRE) = 1\,080{,}61$\,€.
 
-On cherche $r$ tel que $P(r) = 1\,080{,}61$ (taux qui annule la VAN).
+\begin{reponse}
+$TRE = \mathbf{`r pctx(100*TRE, 0)`}$ par an.
+\end{reponse}
 
-<div class="reponse">TRE = **`r pct(TRE, 0)`**.</div>
+\subsection{\textcolor{MidnightBlue}{Incidence d'un passage du taux de 8,5 \% à 9,5 \%}}
 
-### 3- Incidence d'un passage du taux de 8,5 % à 9,5 %
+```{r ex4-table, results='asis'}
+tab4 <- data.frame(
+  taux = c("8,5 %", "9,0 %", "9,5 %"),
+  prix = fmt(c(P85, 1080.61, P95)))
+kable(tab4, booktabs = TRUE, linesep = "", row.names = FALSE, align = "c",
+      col.names = c("Taux de rendement exigé", "Prix de l'obligation (€)"),
+      caption = "Prix de l'obligation selon le taux de rendement exigé")
+```
 
-<div class="reponse">Le prix passe de `r fr(P85)` € à **`r fr(P95)` €**, soit
-**`r fr(P95 - P85)` €**. Le pourcentage de variation pour une hausse de 1 % du taux
-d'intérêt est **ΔP/P = `r pct((P95 - P85)/P85)`**.</div>
+```{r ex4-graph, fig.height=2.9, fig.width=6.2, fig.cap="Relation inverse entre le prix de l'obligation et le taux de rendement exigé"}
+r  <- seq(0.05, 0.14, by = 0.0025)
+db <- data.frame(r = 100*r, p = sapply(r, prix))
+dpt <- data.frame(r = c(8.5, 9, 9.5), p = c(P85, 1080.61, P95),
+                  lab = fmt(c(P85, 1080.61, P95)))
 
-# Modèle de Cox-Ross-Rubinstein à 3 périodes
+ggplot(db, aes(r, p)) +
+  geom_line(colour = col_orange, linewidth = 1.1) +
+  geom_point(data = dpt, colour = col_gris, size = 2.6) +
+  geom_text(data = dpt, aes(label = lab), hjust = -0.12, vjust = -0.35,
+            size = 3, colour = col_bleu, fontface = "bold") +
+  scale_y_continuous(labels = function(x) fmt(x, 0)) +
+  labs(x = "Taux de rendement exigé (%)", y = "Prix (€)") +
+  theme_alm
+```
 
-Cox-Ross-Rubinstein : call européen ; $K = 98$ ; $T = 0{,}25$ ; $S_0 = 100$ ; $\sigma = 20\,\%$ ;
-$r = 5\,\%$ (continu) ; $q = 6\,\%$ (revenu continu) ; $n = 3$ ; $\Delta t = T/n = 1/12$.
+\begin{reponse}
+Le prix passe de `r fmt(P85)`\,€ à $\mathbf{`r fmt(P95)`}$\,\textbf{€}, soit une baisse de
+$`r fmt(P95 - P85)`$\,€. Le pourcentage de variation de l'obligation pour une hausse de
+1\,\% du taux d'intérêt est donc $\Delta P / P = \mathbf{`r pctx(100*(P95 - P85)/P85)`}$ :
+c'est le risque de taux, le prix et le taux variant en sens inverse.
+\end{reponse}
 
-```{r ex5}
-S0 <- 100; K <- 98; T <- 0.25; sig <- 0.20; r <- 0.05; q <- 0.06; n <- 3
+\newpage
+
+\section{\textcolor{MidnightBlue}{Modèle de Cox-Ross-Rubinstein à 3 périodes}}
+
+Call standard européen : $K = 98$ ; $T = 0{,}25$ an ; $S_0 = 100$ ; $\sigma = 20\,\%$ ;
+taux continu sans risque $r = 5\,\%$ ; taux continu de revenu $q = 6\,\%$ ; $n = 3$ périodes,
+soit $\Delta t = T/n = 1/12$.
+
+```{r ex5-calc}
+S0 <- 100; K <- 98; T <- 0.25; sig <- 0.20; r5 <- 0.05; q <- 0.06; n <- 3
 dt <- T/n
 u  <- exp(sig*sqrt(dt)); d <- 1/u
-p  <- (exp((r - q)*dt) - d)/(u - d)
+p  <- (exp((r5 - q)*dt) - d)/(u - d)
 S3 <- S0*u^(3:0)*d^(0:3)
 Cj <- pmax(S0*u^(0:n)*d^(n:0) - K, 0)
-for (i in (n - 1):0) Cj <- exp(-r*dt)*(p*Cj[-1] + (1 - p)*head(Cj, -1))
+for (i in (n - 1):0) Cj <- exp(-r5*dt)*(p*Cj[-1] + (1 - p)*head(Cj, -1))
 ```
 
-### 1) Coefficients Up et Down, probabilités p et 1−p
+\subsection{\textcolor{MidnightBlue}{Coefficients Up et Down, probabilités p et 1-p}}
 
-$$u = e^{\sigma\sqrt{\Delta t}} \qquad ; \qquad d = \frac{1}{u}
+$$u = e^{\sigma\sqrt{\Delta t}} \qquad ; \qquad d = \frac{1}{u} = e^{-\sigma\sqrt{\Delta t}}
 \qquad ; \qquad p = \frac{e^{(r-q)\Delta t} - d}{u - d}$$
 
-Sous Excel : `u = EXP(volatilité*RACINE(durée/n))` ; `d = 1/u` ;
-`p = (EXP((taux−revenu)*durée/n) − d)/(u − d)`.
+Sous Excel : \texttt{u = EXP(volatilité*RACINE(durée/n))} ; \texttt{d = 1/u} ;
+\texttt{p = (EXP((taux-revenu)*durée/n)-d)/(u-d)}.
 
-<div class="reponse">u = **`r fr(u, 4)`** ; d = **`r fr(d, 4)`** ; p = **`r fr(p, 4)`** ;
-1 − p = **`r fr(1 - p, 4)`**.</div>
+\begin{reponse}
+$u = e^{0{,}20\sqrt{1/12}} = \mathbf{`r fmt(u, 4)`}$ ;\quad
+$d = 1/u = \mathbf{`r fmt(d, 4)`}$ ;\quad
+$p = \mathbf{`r fmt(p, 4)`}$ ;\quad $1 - p = \mathbf{`r fmt(1 - p, 4)`}$.
+\end{reponse}
 
-### 2) Prix du sous-jacent à 3 périodes
+\subsection{\textcolor{MidnightBlue}{Prix du sous-jacent à 3 périodes}}
 
-Le prix après $j$ hausses et $3-j$ baisses est $S_0\,u^j d^{\,3-j}$ :
+Après $j$ hausses et $3-j$ baisses, le sous-jacent vaut $S_0\,u^{j}\,d^{\,3-j}$ :
 
-```{r ex5tab, results='asis'}
-tab5 <- data.frame(
-  `Trajectoire` = c("S·u³ (3 hausses)", "S·u²d (2 hausses)",
-                    "S·ud² (1 hausse)", "S·d³ (0 hausse)"),
-  `Prix du sous-jacent` = fr(S3, 4), check.names = FALSE)
-print(knitr::kable(tab5, row.names = FALSE, align = "c"))
+```{r ex5-tree, results='asis'}
+arbre <- data.frame(
+  n0 = c(fmt(S0, 2), "", "", ""),
+  n1 = c(fmt(S0*u, 2), fmt(S0*d, 2), "", ""),
+  n2 = c(fmt(S0*u^2, 2), fmt(S0, 2), fmt(S0*d^2, 2), ""),
+  n3 = fmt(S3))
+kable(arbre, booktabs = TRUE, linesep = "", row.names = FALSE, align = "c",
+      col.names = c("i = 0", "i = 1", "i = 2", "i = 3"),
+      caption = "Arbre binomial du prix du sous-jacent $S_0\\,u^j d^{\\,i-j}$")
 ```
 
-<div class="reponse">S·u³ = **118,91** ; S·u²d = **105,94** ; S·ud² = **94,39** ;
-S·d³ = **84,10**.</div>
+\begin{reponse}
+À l'échéance des 3 périodes, le sous-jacent peut valoir :
+$S_0 u^3 = \mathbf{118{,}91}$ ; $S_0 u^2 d = \mathbf{105{,}94}$ ;
+$S_0 u d^2 = \mathbf{94{,}39}$ ; $S_0 d^3 = \mathbf{84{,}10}$.
+\end{reponse}
 
-### Call Standard Européen
+\subsection{\textcolor{MidnightBlue}{Le call standard européen}}
 
 Par actualisation récursive dans l'univers risque-neutre,
-$C_{i,j} = e^{-r\Delta t}\left[p\,C_{i+1,j+1} + (1-p)\,C_{i+1,j}\right]$, avec
-$C_{3,j} = \max(S_0u^jd^{3-j} - K,\ 0)$ à l'échéance.
+$C_{i,j} = e^{-r\Delta t}\left[p\,C_{i+1,j+1} + (1-p)\,C_{i+1,j}\right]$, avec à l'échéance
+$C_{3,j} = \max(S_0 u^j d^{3-j} - K,\ 0)$ :
 
-<div class="reponse">C₀ ≈ **`r fr(Cj, 2)` €**.</div>
+```{r ex5-call, results='asis'}
+C3 <- pmax(S3 - K, 0)
+C2 <- exp(-r5*dt)*(p*C3[1:3] + (1 - p)*C3[2:4])
+C1 <- exp(-r5*dt)*(p*C2[1:2] + (1 - p)*C2[2:3])
+C0 <- exp(-r5*dt)*(p*C1[1] + (1 - p)*C1[2])
+arbre_c <- data.frame(
+  n0 = c(fmt(C0, 4), "", "", ""),
+  n1 = c(fmt(C1, 4), "", ""),
+  n2 = c(fmt(C2, 4), ""),
+  n3 = fmt(C3, 4))
+kable(arbre_c, booktabs = TRUE, linesep = "", row.names = FALSE, align = "c",
+      col.names = c("i = 0", "i = 1", "i = 2", "i = 3"),
+      caption = "Arbre des valeurs du call standard européen $C_{i,j}$")
+```
 
----
+\begin{reponse}
+Le call standard européen vaut $C_0 \approx \mathbf{`r fmt(C0)`}$\,\textbf{€}.
+\end{reponse}
 
-*Rapport établi par Sié Rachid Traoré — ENSAE, Finance de marché (M. Ousmane Diallo).
-Palette : gris, orange, blanc cassé / beige. Les calculs détaillés sous forme de formules
-Excel figurent dans le classeur `Projet_ENSAE_Finance_de_Marche.xlsx`.*
+```{=tex}
+% --- Table des matières détaillée en fin de document ---
+\newpage
+\setcounter{tocdepth}{3}
+\renewcommand{\contentsname}{\textcolor{MidnightBlue}{Table des matières}}
+{\color{black}\tableofcontents}
+```
+
+```{r cleanup, include=FALSE}
+unlink(c("*.aux","*.log","*.out","*.toc","*.bbl","*.blg","*.synctex.gz"), recursive=TRUE)
+```
