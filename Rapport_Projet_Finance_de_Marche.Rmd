@@ -300,30 +300,6 @@ theme_alm <- theme_minimal(base_size = 10) +
 
 \newpage
 
-\begin{tcolorbox}[enhanced, colback=blancsale!60!white, colframe=MidnightBlue,
-    boxrule=1pt, arc=2mm, left=5mm, right=5mm, top=3mm, bottom=3mm,
-    title={\bfseries Résumé exécutif}, colbacktitle=MidnightBlue,
-    coltitle=white, fonttitle=\normalsize]
-\begin{itemize}[itemsep=2pt]
-  \item Société MIM : le taux de rentabilité exigé par les investisseurs, obtenu par
-        Gordon-Shapiro, est $k = 2/20 + 6\,\% = 16\,\%$.
-  \item Le bêta estimé sur les 16 cotations fournies ressort à $\beta \approx 1{,}61$ :
-        le titre amplifie les variations de l'indice ; avec un taux sans risque de
-        0,2\,\%, le MEDAF donne une rentabilité exigée d'environ 0,43\,\% par période.
-  \item Allocation actif sans risque / actif risqué : la rentabilité croît linéairement
-        avec le risque (pente = ratio de Sharpe $\approx 0{,}39$) ; le portefeuille J
-        (9\,\%) s'obtient avec 37\,500\,€ en actif risqué et supporte un risque de 7,61\,\%.
-  \item Deux actifs risqués non corrélés : la diversification abaisse le risque jusqu'à
-        12\,\% (portefeuille 36\,\%/64\,\%), en dessous du risque de chacun des deux actifs ;
-        la branche inférieure de la courbe est inefficiente.
-  \item Obligation 15 ans, coupon 10\,\% : prix de 1\,124,56\,€ à 8,5\,\% ; TRE de 9\,\%
-        pour un prix de 1\,080,61\,€ ; une hausse de 1 point du taux fait chuter le prix
-        de 7,60\,\% (risque de taux).
-  \item Cox-Ross-Rubinstein à 3 périodes : $u = 1{,}0594$, $d = 0{,}9439$, $p = 0{,}4784$ ;
-        le call standard européen vaut $C_0 \approx 5{,}07$\,€.
-\end{itemize}
-\end{tcolorbox}
-
 \section{\textcolor{MidnightBlue}{PER, Gordon-Shapiro, Sharpe, MEDAF et bêta}}
 
 \subsection{\textcolor{MidnightBlue}{Le Price Earnings Ratio (PER)}}
